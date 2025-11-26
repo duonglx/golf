@@ -14,7 +14,6 @@
         :root {
             --primary-green: #064e3b; /* Emerald 900 */
             --accent-gold: #fbbf24;   /* Amber 400 */
-            --glass-bg: rgba(255, 255, 255, 0.1);
         }
 
         body { font-family: 'Montserrat', sans-serif; background-color: #f0fdf4; }
@@ -58,14 +57,6 @@
             overflow: hidden;
         }
 
-        /* Decorative shine on header */
-        .flight-header::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
-        }
-
         .flight-number-box {
             background: rgba(255,255,255,0.15);
             backdrop-filter: blur(8px);
@@ -78,11 +69,9 @@
             font-family: 'Share Tech Mono', monospace;
             font-size: 26px;
             font-weight: bold;
-            color: #fbbf24; /* Gold text */
+            color: #fbbf24; 
             border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 2;
         }
 
         .group-badge {
@@ -93,8 +82,6 @@
             border-radius: 99px;
             font-size: 13px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 2;
         }
 
         /* Player List Styles */
@@ -106,13 +93,8 @@
             transition: background-color 0.2s;
         }
         
-        .player-row:hover {
-            background-color: #f8fafc;
-        }
-        
-        .player-row:last-child {
-            border-bottom: none;
-        }
+        .player-row:hover { background-color: #f8fafc; }
+        .player-row:last-child { border-bottom: none; }
 
         .player-avatar-wrapper {
             width: 44px;
@@ -147,45 +129,31 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* --- MAGIC HUD ANIMATION STYLES --- */
+        /* --- MAGIC ANIMATION --- */
         #magic-overlay {
             background: rgba(6, 78, 59, 0.98);
             backdrop-filter: blur(20px);
         }
-        
         .hud-circle {
             position: relative;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 200px; height: 200px;
+            display: flex; align-items: center; justify-content: center;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, rgba(0,0,0,0) 70%);
         }
-
         .hud-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: #fbbf24; 
-            border-right-color: #f59e0b;
+            position: absolute; width: 100%; height: 100%;
+            border-radius: 50%; border: 2px solid transparent;
+            border-top-color: #fbbf24; border-right-color: #f59e0b;
             animation: spin-right 2s linear infinite;
         }
-
         @keyframes spin-right { 100% { transform: rotate(360deg); } }
-
         .decipher-text {
             font-family: 'Share Tech Mono', monospace;
             text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
             color: #fbbf24;
         }
-
-        /* Modal Animation */
         .modal-enter { animation: modalIn 0.3s ease-out forwards; }
-        
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
@@ -200,13 +168,11 @@
                 <div class="hud-ring"></div>
                 <i class="fa-solid fa-golf-ball-tee text-5xl text-yellow-400 animate-pulse"></i>
             </div>
-
             <div class="text-center space-y-2">
                 <p class="text-green-200 text-xs font-mono-tech tracking-[0.2em] uppercase">System Processing</p>
                 <h2 id="magic-name" class="text-3xl md:text-5xl font-bold text-white decipher-text min-h-[60px]">INITIALIZING...</h2>
                 <p id="magic-status" class="text-green-200 text-sm font-mono-tech">Fetching Data...</p>
             </div>
-
             <div class="w-80 h-1 bg-green-900 mt-8 rounded-full overflow-hidden relative border border-green-700">
                 <div id="magic-progress" class="h-full bg-yellow-400 w-0 shadow-[0_0_10px_rgba(251,191,36,0.8)]"></div>
             </div>
@@ -223,21 +189,21 @@
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="p-6">
-                <p class="text-slate-600 text-sm leading-relaxed mb-2">
-                    Hệ thống sẽ tải dữ liệu từ Google Sheet và xử lý theo quy tắc mới:
+                <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                    Hệ thống sẽ tải lại dữ liệu từ Google Sheet và xử lý:
                 </p>
-                <ul class="text-xs text-slate-500 space-y-2 list-none pl-1">
+                <ul class="text-xs text-slate-500 space-y-2 pl-2 border-l-2 border-green-200 ml-1">
                     <li class="flex items-start gap-2">
-                        <i class="fa-solid fa-check text-green-600 mt-0.5"></i>
-                        <span>Chia <b>Group A</b> trước, sau đó đến <b>Group B</b>.</span>
+                        <span class="font-bold text-green-700">1.</span>
+                        <span>Chia tuyệt đối theo cột <b>Group</b> (A trước, B sau). Không xét HDC để chia bảng.</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <i class="fa-solid fa-check text-green-600 mt-0.5"></i>
-                        <span>Người chơi <b>IsRandom = N</b> sẽ được xếp chung và sắp xếp theo HDC (Thấp -> Cao).</span>
+                        <span class="font-bold text-green-700">2.</span>
+                        <span>Người chơi <b>IsRandom = N</b> sẽ được gom lại và xếp theo HDC thấp -> cao.</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <i class="fa-solid fa-check text-green-600 mt-0.5"></i>
-                        <span>Ưu tiên Tee-time (Priority) được áp dụng <b>trong nội bộ bảng đấu</b>.</span>
+                        <span class="font-bold text-green-700">3.</span>
+                        <span>Dữ liệu cũ sẽ bị xóa hoàn toàn.</span>
                     </li>
                 </ul>
             </div>
@@ -263,13 +229,11 @@
                         <p class="text-gray-300 text-sm font-medium mt-1 font-mono-tech tracking-wide"><i class="fa-solid fa-location-dot mr-2 text-yellow-400"></i>Sân Đông - Thủ Đức | 28/11/2025</p>
                     </div>
                 </div>
-
                 <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 text-sm min-w-[200px] shadow-lg text-center">
                     <div class="text-gray-300 text-xs uppercase tracking-wider mb-1">Tổng người chơi</div>
                     <div class="font-mono-tech text-3xl font-bold text-yellow-400" id="total-players-display">--</div>
                 </div>
             </div>
-
             <div class="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-4">
                 <button onclick="copyToClipboard()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow transition flex items-center gap-2 text-sm">
                     <i class="fa-regular fa-copy"></i> Copy Excel
@@ -287,12 +251,11 @@
              <i class="fa-solid fa-list-ol text-green-700 text-xl"></i>
              <h2 class="text-xl font-bold text-gray-800">Danh sách Flight</h2>
         </div>
-        <div id="fly-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            </div>
+        <div id="fly-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
     </main>
 
     <footer class="bg-slate-900 text-slate-500 py-6 text-center text-xs border-t border-slate-800">
-        <p class="font-mono-tech">POWERED BY WOB GOLF TECH v2.6</p>
+        <p class="font-mono-tech">POWERED BY WOB GOLF TECH v3.0 (STRICT GROUP)</p>
     </footer>
 
     <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl z-50 transition-all duration-300 opacity-0 translate-y-10 flex items-center gap-3">
@@ -306,15 +269,14 @@
             startDate: "28/11/2025",
             startTime: "06:37", 
             interval: 7,        
-            storageKey: "WOB_OUTING_DATA_V2_ORDERED", 
-            // Link Google Sheet CSV
+            // CHANGE KEY TO FORCE REFRESH
+            storageKey: "WOB_OUTING_STRICT_V3_FINAL", 
             sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv"
         };
 
         let currentFlights = [];
         let rawPlayers = [];
 
-        // --- INIT ---
         function init() {
             const savedData = localStorage.getItem(CONFIG.storageKey);
             if (savedData) {
@@ -326,24 +288,32 @@
             }
         }
 
-        // --- FETCH DATA ---
+        // --- FETCH DATA ROBUSTLY ---
         async function fetchAndParseData() {
             return new Promise((resolve, reject) => {
                 Papa.parse(CONFIG.sheetCsvUrl, {
                     download: true,
                     header: true,
+                    skipEmptyLines: true,
+                    // FIX: Transform headers to standard format (Trim + Lowercase) to avoid mismatches
+                    transformHeader: function(h) {
+                        return h.trim().toLowerCase();
+                    },
                     complete: function(results) {
-                        console.log("Raw Data:", results.data);
-                        const cleaned = results.data
-                            .filter(row => row.PlayerName && row.PlayerName.trim() !== "")
-                            .map(row => ({
-                                name: row['PlayerName'] || "Unknown",
-                                vga: row['VGA'] || "N/A",
-                                hdc: parseInt(row['Handicap']) || 0,
-                                group: row['Group'] ? row['Group'].trim().toUpperCase() : "A", // Force uppercase for matching
-                                isRandom: row['IsRandom'] ? row['IsRandom'].trim().toUpperCase() : "Y",
-                                priority: parseInt(row['PriorityFlyTime']) || 0
-                            }));
+                        console.log("Parsed Headers:", results.meta.fields); // Debug
+                        
+                        const cleaned = results.data.map(row => {
+                            // Map robustly using lowercase keys
+                            return {
+                                name: row['playername'] || "Unknown",
+                                vga: row['vga'] || "N/A",
+                                hdc: parseInt(row['handicap']) || 0,
+                                // STRICT LOGIC: Get Group, Trim, Uppercase. Default to A only if empty.
+                                group: row['group'] ? row['group'].trim().toUpperCase() : "A",
+                                isRandom: row['israndom'] ? row['israndom'].trim().toUpperCase() : "Y",
+                                priority: parseInt(row['priorityflytime']) || 0
+                            };
+                        });
                         resolve(cleaned);
                     },
                     error: function(err) {
@@ -353,27 +323,18 @@
             });
         }
 
-        // --- AVATAR GENERATOR ---
         function generateSafeAvatar(name) {
             const styles = ["shortFlat", "theCaesar", "theCaesarSidePart", "shortRound", "shortWaved"];
             const randomStyle = styles[Math.floor(Math.random() * styles.length)];
             return `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(name)}&top=${randomStyle}&eyebrows=default&mouth=smile&clothing=collarAndSweater&clothingColor=3c4f5c,65c9ff,262e33`;
         }
+        function getInitials(name) { return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase(); }
 
-        function getInitials(name) {
-            return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        }
-
-        // --- MODAL LOGIC ---
+        // --- UI HANDLERS ---
         function openModal() { document.getElementById('confirm-modal').classList.remove('hidden'); }
         function closeModal() { document.getElementById('confirm-modal').classList.add('hidden'); }
-        
-        function confirmReshuffle() {
-            closeModal();
-            startMagicSequence();
-        }
+        function confirmReshuffle() { closeModal(); startMagicSequence(); }
 
-        // --- MAGIC ANIMATION ---
         async function startMagicSequence() {
             const overlay = document.getElementById('magic-overlay');
             const magicName = document.getElementById('magic-name');
@@ -381,106 +342,93 @@
             const progressBar = document.getElementById('magic-progress');
             
             overlay.classList.remove('hidden');
-            progressBar.style.width = '0%';
+            progressBar.style.width = '10%';
             
             try {
-                magicStatus.innerText = "Connecting to Database...";
-                progressBar.style.width = '20%';
+                // 1. CLEAR OLD DATA
+                localStorage.removeItem(CONFIG.storageKey);
                 
-                // 1. Fetch Data
+                magicStatus.innerText = "Downloading CSV...";
                 rawPlayers = await fetchAndParseData();
-                progressBar.style.width = '50%';
-                magicStatus.innerText = `Loaded ${rawPlayers.length} Players`;
-
-                // 2. Animation Loop
+                progressBar.style.width = '60%';
+                
                 let step = 0;
                 const interval = setInterval(() => {
                     const r = rawPlayers[Math.floor(Math.random() * rawPlayers.length)];
                     magicName.innerText = r.name.toUpperCase();
                     step++;
-                    if(step > 15) magicStatus.innerText = "Sorting Groups A -> B...";
-                }, 80);
+                    if(step > 20) magicStatus.innerText = "Segregating Groups...";
+                }, 50);
 
-                setTimeout(() => {
-                    progressBar.style.width = '100%';
-                }, 1000);
-
-                // 3. Process Logic
                 setTimeout(() => {
                     clearInterval(interval);
-                    generateFlightsLogic();
-                    magicName.innerText = "COMPLETED";
+                    generateFlightsStrictLogic();
+                    progressBar.style.width = '100%';
+                    magicName.innerText = "DONE";
                     setTimeout(() => overlay.classList.add('hidden'), 500);
-                }, 3000);
+                }, 2500);
 
             } catch (error) {
-                alert("Lỗi tải dữ liệu: " + error);
+                alert("Lỗi tải dữ liệu: " + error.message);
                 overlay.classList.add('hidden');
             }
         }
 
-        // --- NEW CORE LOGIC (STRICT GROUP A -> B ORDER) ---
-        function generateFlightsLogic() {
-            // 1. Define Order of Groups (Strictly A then B)
-            // If there are other groups like C, D, they will follow alphabetically
-            const uniqueGroups = [...new Set(rawPlayers.map(p => p.group))].sort(); // ['A', 'B', ...]
-
+        // --- STRICT GROUP LOGIC ---
+        function generateFlightsStrictLogic() {
+            // 1. Get Distinct Groups and Sort them (A, B, C...)
+            const distinctGroups = [...new Set(rawPlayers.map(p => p.group))].sort();
+            
             let finalOrderedFlights = [];
 
-            // 2. Process each Group sequentially
-            uniqueGroups.forEach(groupName => {
-                // Get all players for this group
+            // 2. Iterate Strictly by Group Name
+            distinctGroups.forEach(groupName => {
+                // FILTER: Only players belonging to this group
+                // Note: No HDC check here. Just group match.
                 const groupPlayers = rawPlayers.filter(p => p.group === groupName);
 
-                // A. Split Fixed vs Random
-                // Requirement: Fixed players (IsRandom=N) are grouped together and sorted by HDC
-                let fixedPlayers = groupPlayers.filter(p => p.isRandom === 'N');
-                fixedPlayers.sort((a, b) => a.hdc - b.hdc); // Sort Low HDC -> High HDC
+                if (groupPlayers.length === 0) return;
 
-                // Requirement: Random players are shuffled
-                let randomPlayers = groupPlayers.filter(p => p.isRandom !== 'N');
-                randomPlayers = shuffle(randomPlayers);
+                // Split Fixed vs Random
+                let fixed = groupPlayers.filter(p => p.isRandom === 'N');
+                let random = groupPlayers.filter(p => p.isRandom !== 'N');
 
-                // B. Chunk into flights of 4
-                let groupFlights = [];
+                // Sort Fixed by HDC (Low -> High)
+                fixed.sort((a, b) => a.hdc - b.hdc);
+                
+                // Shuffle Random
+                random = shuffle(random);
 
-                // Helper to create flight objects
-                const createFlightsFromList = (list) => {
+                let currentGroupFlights = [];
+
+                // Helper to chunk list into flights
+                const processList = (list) => {
                     while(list.length > 0) {
                         const chunk = list.splice(0, 4);
-                        
-                        // Calculate Priority for this flight (Min priority value = Highest Importance)
-                        // Priority 1 is better than Priority 8. 0 is no priority.
+                        // Find priority (Min value = High priority)
                         let pValues = chunk.map(p => p.priority).filter(p => p > 0);
-                        let flightPriority = pValues.length > 0 ? Math.min(...pValues) : 999; 
+                        let flightPriority = pValues.length > 0 ? Math.min(...pValues) : 999;
 
-                        groupFlights.push({
+                        currentGroupFlights.push({
                             players: chunk,
                             groupName: groupName,
-                            sortPriority: flightPriority, // For internal sorting
+                            sortPriority: flightPriority,
                             totalHDC: chunk.reduce((sum, p) => sum + p.hdc, 0)
                         });
                     }
                 };
 
-                // Create Fixed Flights first, then Random Flights? 
-                // Or treat them equally for Tee Time sorting?
-                // Usually fixed flights (VIPs) might have priority. We create them all then sort by priority.
-                createFlightsFromList(fixedPlayers);
-                createFlightsFromList(randomPlayers);
+                processList(fixed);
+                processList(random);
 
-                // C. Internal Sort within the Group based on PriorityFlyTime
-                // Rules:
-                // - Priority 1 goes to top of THIS group.
-                // - Priority 8 goes to bottom of THIS group.
-                // - 999 (No priority) stays in middle/random order.
-                groupFlights.sort((a, b) => a.sortPriority - b.sortPriority);
+                // Sort flights within this group by Priority
+                currentGroupFlights.sort((a, b) => a.sortPriority - b.sortPriority);
 
-                // D. Append to Global List
-                finalOrderedFlights.push(...groupFlights);
+                // Append to master list
+                finalOrderedFlights.push(...currentGroupFlights);
             });
 
-            // 3. Assign Final Tee Times & Fly Numbers
+            // 3. Assign Tee Times
             currentFlights = finalOrderedFlights.map((f, index) => ({
                 flyNo: index + 1,
                 teeTime: calculateTeeTime(CONFIG.startTime, index, CONFIG.interval),
@@ -489,13 +437,11 @@
                 totalHDC: f.totalHDC
             }));
 
-            // Save
             localStorage.setItem(CONFIG.storageKey, JSON.stringify(currentFlights));
             updateStats(currentFlights);
             renderFlights();
         }
 
-        // --- UTILS ---
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
             while (currentIndex != 0) {
@@ -520,7 +466,6 @@
             document.getElementById('total-players-display').innerText = total;
         }
 
-        // --- RENDER ---
         function renderFlights() {
             const grid = document.getElementById('fly-grid');
             grid.innerHTML = '';
@@ -549,7 +494,6 @@
                     </div>
                 `}).join('');
 
-                // Fill empty slots
                 if(fly.players.length < 4) {
                     for(let i=0; i < (4 - fly.players.length); i++) {
                          playersHtml += `
@@ -567,9 +511,7 @@
                 card.innerHTML = `
                     <div class="flight-header">
                         <div class="flex items-center gap-3 relative z-10">
-                            <div class="flight-number-box">
-                                ${fly.flyNo}
-                            </div>
+                            <div class="flight-number-box">${fly.flyNo}</div>
                             <div>
                                 <div class="text-[10px] text-green-200 uppercase tracking-widest font-bold mb-0.5 opacity-80">FLIGHT</div>
                                 <div class="text-xl font-bold font-mono-tech flex items-center gap-2">
@@ -577,13 +519,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="group-badge">
-                            GROUP ${fly.groupName}
-                        </div>
+                        <div class="group-badge">GROUP ${fly.groupName}</div>
                     </div>
-                    <div class="flex-grow bg-white relative">
-                        ${playersHtml}
-                    </div>
+                    <div class="flex-grow bg-white relative">${playersHtml}</div>
                 `;
                 grid.appendChild(card);
             });
@@ -597,7 +535,7 @@
                 });
             });
             navigator.clipboard.writeText(content).then(() => {
-                showToast("Đã copy dữ liệu! Hãy Paste (Ctrl+V) vào Excel.");
+                showToast("Đã copy dữ liệu!");
             });
         }
 
@@ -605,9 +543,7 @@
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = msg;
             toast.classList.remove('opacity-0', 'translate-y-10');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-10');
-            }, 3000);
+            setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-10'); }, 3000);
         }
 
         init();
