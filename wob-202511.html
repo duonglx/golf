@@ -192,8 +192,9 @@
         const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv";
 
         const BACKUP_DATA = [
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng", VGA: "47824", Handicap: 21, AvatarURL: "" },
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20, AvatarURL: "" }
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng", VGA: "47824", Handicap: 21,Group: "A", AvatarURL: "" },
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20,Group: "A", AvatarURL: "" },
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player", VGA: "12345", Handicap: 20, Group: "A", AvatarURL: "" }
         ];
 
         let allFlightsData = [];
@@ -275,8 +276,13 @@
                     grouped[flyNo] = {
                         flyNo: flyNo,
                         teeTime: item.TeeTime || "TBD",
+                        group: item.Group || "", // <--- MỚI THÊM: Lấy dữ liệu cột Group
                         players: []
                     };
+                }
+                // Cập nhật Group nếu dòng đầu tiên bị trống mà dòng sau lại có
+                if (!grouped[flyNo].group && item.Group) {
+                    grouped[flyNo].group = item.Group;
                 }
 
                 const safeAvatar = generateSafeAvatar(item.PlayerName, item.VGA);
@@ -327,7 +333,7 @@
                 const card = document.createElement('div');
                 card.className = "flight-card";
                 card.innerHTML = `
-                    <div class="card-header-bg px-4 py-3 flex justify-between items-center text-white shadow-sm">
+                    <div class="card-header-bg px-4 py-3 flex justify-between items-center text-white shadow-sm relative overflow-hidden">
                         <div class="flex items-center gap-3 relative z-10">
                             <div class="w-9 h-9 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center border border-white/30 text-yellow-300 font-extrabold text-lg shadow-inner">
                                 ${fly.flyNo}
@@ -339,6 +345,14 @@
                                 </span>
                             </div>
                         </div>
+
+                        ${fly.group ? `
+                        <div class="relative z-10">
+                            <span class="bg-white text-green-800 text-[10px] md:text-xs font-extrabold px-3 py-1 rounded shadow-sm border border-green-100 uppercase tracking-wider">
+                                GROUP ${fly.group}
+                            </span>
+                        </div>
+                        ` : ''}
                     </div>
                     <div class="bg-gray-50 px-3 py-1.5 flex justify-between items-center border-b border-gray-100">
                         <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider pl-11">Golfer</span>
@@ -348,6 +362,7 @@
                         ${playersHtml}
                     </div>
                 `;
+
                 grid.appendChild(card);
             });
         }
