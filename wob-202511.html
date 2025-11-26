@@ -40,10 +40,10 @@
         /* Modern Card Styling */
         .flight-card {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.05);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -51,13 +51,13 @@
         
         .flight-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 30px -4px rgba(22, 101, 52, 0.15);
-            border-color: #86efac;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #10b981;
         }
 
         /* Header Gradient */
         .header-bg {
-            background: linear-gradient(rgba(6, 78, 59, 0.85), rgba(6, 78, 59, 0.9)), 
+            background: linear-gradient(rgba(6, 78, 59, 0.9), rgba(6, 78, 59, 0.95)), 
                         url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
@@ -65,16 +65,8 @@
         
         /* Card Header Gradient (Golf Style) */
         .card-header-bg {
-            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            background: #065f46; /* Emerald 800 */
             position: relative;
-        }
-        .card-header-bg::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(#10b981 1px, transparent 1px);
-            background-size: 10px 10px;
-            opacity: 0.1;
         }
 
         /* Loading Spinner */
@@ -99,15 +91,15 @@
         /* Badge Styles */
         .vga-badge { font-size: 0.65rem; background: #f3f4f6; color: #6b7280; padding: 2px 6px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px; }
         .hdc-badge { 
-            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); 
+            background: #15803d; /* Green 700 */
             color: white; 
-            width: 34px; height: 34px; 
+            min-width: 32px; height: 32px; 
+            padding: 0 6px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; 
+            border-radius: 6px;
             font-weight: 700; 
             font-size: 0.9rem;
-            box-shadow: 0 2px 4px rgba(22, 163, 74, 0.2);
-            border: 2px solid #dcfce7;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -202,10 +194,10 @@
         // --- CONFIGURATION ---
         const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv";
 
-        // Backup Data
+        // Backup Data (Dùng khi lỗi mạng)
         const BACKUP_DATA = [
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player 1", VGA: "12345", Handicap: 20, AvatarURL: "" },
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player 2", VGA: "67890", Handicap: 15, AvatarURL: "" }
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng", VGA: "47824", Handicap: 21, AvatarURL: "" },
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20, AvatarURL: "" }
         ];
 
         let allFlightsData = [];
@@ -251,6 +243,25 @@
             });
         }
 
+        // --- HELPER: GENERATE CORRECT AVATAR URL (FIX V9 ERROR) ---
+        function generateSafeAvatar(name, originalSeed) {
+            // Danh sách style tóc ngắn CHUẨN cho bản v9
+            // Loại bỏ hoàn toàn các style gây lỗi 400
+            const validStyles = [
+                "shortFlat", "shortRound", "shortWaved", 
+                "sides", "theCaesar", "theCaesarSidePart", 
+                "dreads", "curly", "shavedSides"
+            ];
+            
+            // Tạo query string mới
+            const styleParams = validStyles.map(s => `top[]=${s}`).join('&');
+            
+            // Dùng seed từ tên người chơi để cố định avatar (nếu không có seed riêng)
+            const seed = originalSeed || name.replace(/\s/g, '');
+            
+            return `https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_${seed}&${styleParams}&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede`;
+        }
+
         // --- PROCESS DATA ---
         function processData(rawData) {
             const grouped = {};
@@ -270,16 +281,15 @@
                     };
                 }
 
-                let avatar = item.AvatarURL;
-                if(!avatar || avatar.trim() === "") {
-                    avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(item.PlayerName)}&background=random&color=fff&bold=true`;
-                }
+                // Tự động FIX link avatar bị lỗi từ file CSV
+                // Thay vì dùng link cũ, ta tạo link mới chuẩn v9
+                const safeAvatar = generateSafeAvatar(item.PlayerName, item.VGA);
 
                 grouped[flyNo].players.push({
                     name: item.PlayerName,
                     vga: item.VGA || "---",
                     hdc: item.Handicap || 0,
-                    avatar: avatar
+                    avatar: safeAvatar 
                 });
 
                 totalPlayers++;
@@ -305,14 +315,15 @@
             data.forEach(fly => {
                 // Players List
                 const playersHtml = fly.players.map((p, index) => `
-                    <div class="flex items-center gap-3 py-2.5 px-3 hover:bg-green-50/50 transition border-b border-gray-100 last:border-0 last:pb-0 group">
+                    <div class="flex items-center gap-3 py-3 px-3 hover:bg-gray-50 transition border-b border-gray-200 border-dashed last:border-0">
                         <div class="relative flex-shrink-0">
                             <img src="${p.avatar}" alt="${p.name}" 
-                                 class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm group-hover:border-green-200 transition">
+                                 class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm bg-gray-100"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=random'">
                         </div>
                         
                         <div class="flex-grow min-w-0">
-                            <div class="text-sm font-bold text-gray-800 truncate leading-tight group-hover:text-green-800 transition">${p.name}</div>
+                            <div class="text-sm font-bold text-gray-800 truncate leading-tight">${p.name}</div>
                             <div class="mt-0.5"><span class="vga-badge">VGA: ${p.vga}</span></div>
                         </div>
 
@@ -328,26 +339,26 @@
                 const card = document.createElement('div');
                 card.className = "flight-card";
                 card.innerHTML = `
-                    <div class="card-header-bg p-4 flex justify-between items-center text-white">
+                    <div class="card-header-bg p-4 flex justify-between items-center text-white shadow-sm">
                         <div class="flex items-center gap-3 relative z-10">
-                            <div class="w-11 h-11 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center border border-white/20 text-yellow-300 font-extrabold text-xl shadow-inner">
+                            <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center border border-white/30 text-yellow-300 font-extrabold text-xl shadow-inner">
                                 ${fly.flyNo}
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-[10px] font-bold text-green-200 uppercase tracking-widest leading-none mb-0.5">Flight</span>
+                                <span class="text-[10px] font-bold text-green-100 uppercase tracking-widest leading-none mb-0.5 opacity-80">Flight</span>
                                 <span class="text-white font-bold font-mono text-lg leading-tight flex items-center gap-2">
-                                    <i class="fa-regular fa-clock text-xs opacity-70"></i> ${fly.teeTime}
+                                    <i class="fa-regular fa-clock text-xs opacity-80"></i> ${fly.teeTime}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="px-4 pt-3 pb-1 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-50 bg-white">
-                        <span class="pl-14">Golfer / VGA</span>
-                        <span class="pr-2">HDC</span>
+                    <div class="bg-gray-100 px-4 py-1.5 flex justify-between items-center border-b border-gray-200">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider pl-12">Golfer</span>
+                        <span class="text-[10px] font-bold text-green-700 uppercase tracking-wider pr-1">HDC</span>
                     </div>
 
-                    <div class="pb-3 flex-grow flex flex-col justify-center">
+                    <div class="pb-2 flex-grow flex flex-col justify-center">
                         ${playersHtml}
                     </div>
                 `;
