@@ -27,7 +27,7 @@
             background-size: 20px 20px;
         }
 
-        /* --- CARD DESIGN (MATCHING UPLOADED IMAGE) --- */
+        /* --- CARD DESIGN --- */
         .flight-card {
             background: white;
             border-radius: 16px;
@@ -37,48 +37,64 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            border: 1px solid #f0fdf4;
         }
         
         .flight-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #d1fae5;
         }
 
         /* Header Style */
         .flight-header {
-            background-color: #14532d; /* Emerald 900 custom */
+            background: linear-gradient(to right, #064e3b, #065f46);
             color: white;
             padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative shine on header */
+        .flight-header::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
         }
 
         .flight-number-box {
             background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(4px);
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            backdrop-filter: blur(8px);
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #fbbf24; /* Gold text */
             border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
         }
 
         .group-badge {
             background-color: white;
             color: #14532d;
             font-weight: 800;
-            padding: 2px 10px;
+            padding: 4px 12px;
             border-radius: 99px;
-            font-size: 12px;
+            font-size: 13px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
         }
 
         /* Player List Styles */
@@ -86,7 +102,12 @@
             display: flex;
             align-items: center;
             padding: 12px 16px;
-            border-bottom: 1px dashed #e2e8f0; /* Dashed border */
+            border-bottom: 1px dashed #cbd5e1;
+            transition: background-color 0.2s;
+        }
+        
+        .player-row:hover {
+            background-color: #f8fafc;
         }
         
         .player-row:last-child {
@@ -94,10 +115,10 @@
         }
 
         .player-avatar-wrapper {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background-color: #d1fae5;
+            background-color: #ecfdf5;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -107,25 +128,26 @@
             color: #065f46;
             overflow: hidden;
             border: 2px solid #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .badge-hdc-square {
             background-color: #15803d; /* Green 700 */
             color: white;
-            width: 36px;
-            height: 36px;
+            min-width: 32px;
+            height: 32px;
+            padding: 0 6px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Share Tech Mono', monospace;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* --- MAGIC HUD ANIMATION STYLES (Keep existing) --- */
+        /* --- MAGIC HUD ANIMATION STYLES --- */
         #magic-overlay {
             background: rgba(6, 78, 59, 0.98);
             backdrop-filter: blur(20px);
@@ -202,12 +224,21 @@
             </div>
             <div class="p-6">
                 <p class="text-slate-600 text-sm leading-relaxed mb-2">
-                    Hệ thống sẽ tải dữ liệu mới nhất từ <b>Google Sheet</b> và thực hiện chia nhóm.
+                    Hệ thống sẽ tải dữ liệu từ Google Sheet và xử lý theo quy tắc mới:
                 </p>
-                <ul class="text-xs text-slate-500 space-y-1 list-disc pl-5 bg-gray-50 p-3 rounded">
-                    <li>Ưu tiên Tee-time theo cột Priority.</li>
-                    <li>Người chơi <b>IsRandom = N</b> sẽ được xếp theo HDC.</li>
-                    <li>Người chơi cùng <b>Group</b> sẽ xếp cùng nhau.</li>
+                <ul class="text-xs text-slate-500 space-y-2 list-none pl-1">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-600 mt-0.5"></i>
+                        <span>Chia <b>Group A</b> trước, sau đó đến <b>Group B</b>.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-600 mt-0.5"></i>
+                        <span>Người chơi <b>IsRandom = N</b> sẽ được xếp chung và sắp xếp theo HDC (Thấp -> Cao).</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-600 mt-0.5"></i>
+                        <span>Ưu tiên Tee-time (Priority) được áp dụng <b>trong nội bộ bảng đấu</b>.</span>
+                    </li>
                 </ul>
             </div>
             <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-100">
@@ -261,7 +292,7 @@
     </main>
 
     <footer class="bg-slate-900 text-slate-500 py-6 text-center text-xs border-t border-slate-800">
-        <p class="font-mono-tech">POWERED BY WOB GOLF TECH v2.5</p>
+        <p class="font-mono-tech">POWERED BY WOB GOLF TECH v2.6</p>
     </footer>
 
     <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl z-50 transition-all duration-300 opacity-0 translate-y-10 flex items-center gap-3">
@@ -275,8 +306,8 @@
             startDate: "28/11/2025",
             startTime: "06:37", 
             interval: 7,        
-            storageKey: "WOB_OUTING_FINAL_SHEET_V1", 
-            // Link Google Sheet CSV (Publish to Web -> CSV)
+            storageKey: "WOB_OUTING_DATA_V2_ORDERED", 
+            // Link Google Sheet CSV
             sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv"
         };
 
@@ -303,16 +334,15 @@
                     header: true,
                     complete: function(results) {
                         console.log("Raw Data:", results.data);
-                        // Clean keys and map to internal structure
                         const cleaned = results.data
-                            .filter(row => row.PlayerName && row.PlayerName.trim() !== "") // Filter empty rows
+                            .filter(row => row.PlayerName && row.PlayerName.trim() !== "")
                             .map(row => ({
-                                name: row['PlayerName'] || row['PlayerName'] || "Unknown",
+                                name: row['PlayerName'] || "Unknown",
                                 vga: row['VGA'] || "N/A",
                                 hdc: parseInt(row['Handicap']) || 0,
-                                group: row['Group'] ? row['Group'].trim() : "A",
+                                group: row['Group'] ? row['Group'].trim().toUpperCase() : "A", // Force uppercase for matching
                                 isRandom: row['IsRandom'] ? row['IsRandom'].trim().toUpperCase() : "Y",
-                                priority: parseInt(row['PriorityFlyTime']) || 0 // 0 means no priority
+                                priority: parseInt(row['PriorityFlyTime']) || 0
                             }));
                         resolve(cleaned);
                     },
@@ -323,14 +353,10 @@
             });
         }
 
-        // --- AVATAR GENERATOR (DiceBear v9 Safe) ---
+        // --- AVATAR GENERATOR ---
         function generateSafeAvatar(name) {
-            // DiceBear v9 styles: "shortFlat", "theCaesar", "theCaesarSidePart", "shortRound", "shortWaved"
-            // We use a deterministic seed based on name to keep avatar consistent
             const styles = ["shortFlat", "theCaesar", "theCaesarSidePart", "shortRound", "shortWaved"];
-            const randomStyle = styles[Math.floor(Math.random() * styles.length)]; // Just pick one for simplicity or hash name
-            
-            // Build URL manually to ensure safety
+            const randomStyle = styles[Math.floor(Math.random() * styles.length)];
             return `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(name)}&top=${randomStyle}&eyebrows=default&mouth=smile&clothing=collarAndSweater&clothingColor=3c4f5c,65c9ff,262e33`;
         }
 
@@ -358,13 +384,13 @@
             progressBar.style.width = '0%';
             
             try {
-                magicStatus.innerText = "Connecting to Satellite...";
+                magicStatus.innerText = "Connecting to Database...";
                 progressBar.style.width = '20%';
                 
                 // 1. Fetch Data
                 rawPlayers = await fetchAndParseData();
                 progressBar.style.width = '50%';
-                magicStatus.innerText = `Data Loaded: ${rawPlayers.length} Players`;
+                magicStatus.innerText = `Loaded ${rawPlayers.length} Players`;
 
                 // 2. Animation Loop
                 let step = 0;
@@ -372,7 +398,7 @@
                     const r = rawPlayers[Math.floor(Math.random() * rawPlayers.length)];
                     magicName.innerText = r.name.toUpperCase();
                     step++;
-                    if(step > 20) magicStatus.innerText = "Optimizing Group Algorithms...";
+                    if(step > 15) magicStatus.innerText = "Sorting Groups A -> B...";
                 }, 80);
 
                 setTimeout(() => {
@@ -383,121 +409,79 @@
                 setTimeout(() => {
                     clearInterval(interval);
                     generateFlightsLogic();
-                    magicName.innerText = "SUCCESS";
+                    magicName.innerText = "COMPLETED";
                     setTimeout(() => overlay.classList.add('hidden'), 500);
                 }, 3000);
 
             } catch (error) {
-                alert("Lỗi tải dữ liệu Google Sheet: " + error);
+                alert("Lỗi tải dữ liệu: " + error);
                 overlay.classList.add('hidden');
             }
         }
 
-        // --- CORE LOGIC (THE BRAIN) ---
+        // --- NEW CORE LOGIC (STRICT GROUP A -> B ORDER) ---
         function generateFlightsLogic() {
-            // 1. Group Players by "Group" column (A, B, C...)
-            const groups = {};
-            rawPlayers.forEach(p => {
-                if (!groups[p.group]) groups[p.group] = [];
-                groups[p.group].push(p);
-            });
+            // 1. Define Order of Groups (Strictly A then B)
+            // If there are other groups like C, D, they will follow alphabetically
+            const uniqueGroups = [...new Set(rawPlayers.map(p => p.group))].sort(); // ['A', 'B', ...]
 
-            let unassignedFlights = [];
+            let finalOrderedFlights = [];
 
-            // 2. Process each Group
-            Object.keys(groups).forEach(groupName => {
-                let players = groups[groupName];
-                
-                // Separate Fixed (IsRandom=N) and Random
-                let fixedPlayers = players.filter(p => p.isRandom === 'N');
-                let randomPlayers = players.filter(p => p.isRandom !== 'N');
+            // 2. Process each Group sequentially
+            uniqueGroups.forEach(groupName => {
+                // Get all players for this group
+                const groupPlayers = rawPlayers.filter(p => p.group === groupName);
 
-                // Sort Fixed by HDC (Low to High)
-                fixedPlayers.sort((a, b) => a.hdc - b.hdc);
-                
-                // Shuffle Random
+                // A. Split Fixed vs Random
+                // Requirement: Fixed players (IsRandom=N) are grouped together and sorted by HDC
+                let fixedPlayers = groupPlayers.filter(p => p.isRandom === 'N');
+                fixedPlayers.sort((a, b) => a.hdc - b.hdc); // Sort Low HDC -> High HDC
+
+                // Requirement: Random players are shuffled
+                let randomPlayers = groupPlayers.filter(p => p.isRandom !== 'N');
                 randomPlayers = shuffle(randomPlayers);
 
-                // Create chunks of 4
-                // Note: Logic assumes multiples of 4 or handles leftovers. 
-                // We process Fixed first, then Random.
-                
-                // Helper to chunk
-                const chunkAndCreate = (list) => {
+                // B. Chunk into flights of 4
+                let groupFlights = [];
+
+                // Helper to create flight objects
+                const createFlightsFromList = (list) => {
                     while(list.length > 0) {
                         const chunk = list.splice(0, 4);
-                        // Determine Priority for this chunk (flight)
-                        // If anyone has priority 1-8, take the MIN (highest priority) value
-                        let flightPriority = 0;
-                        const priorities = chunk.map(p => p.priority).filter(p => p > 0);
-                        if (priorities.length > 0) {
-                            flightPriority = Math.min(...priorities);
-                        }
+                        
+                        // Calculate Priority for this flight (Min priority value = Highest Importance)
+                        // Priority 1 is better than Priority 8. 0 is no priority.
+                        let pValues = chunk.map(p => p.priority).filter(p => p > 0);
+                        let flightPriority = pValues.length > 0 ? Math.min(...pValues) : 999; 
 
-                        unassignedFlights.push({
+                        groupFlights.push({
                             players: chunk,
                             groupName: groupName,
-                            priority: flightPriority,
+                            sortPriority: flightPriority, // For internal sorting
                             totalHDC: chunk.reduce((sum, p) => sum + p.hdc, 0)
                         });
                     }
                 };
 
-                chunkAndCreate(fixedPlayers);
-                chunkAndCreate(randomPlayers);
+                // Create Fixed Flights first, then Random Flights? 
+                // Or treat them equally for Tee Time sorting?
+                // Usually fixed flights (VIPs) might have priority. We create them all then sort by priority.
+                createFlightsFromList(fixedPlayers);
+                createFlightsFromList(randomPlayers);
+
+                // C. Internal Sort within the Group based on PriorityFlyTime
+                // Rules:
+                // - Priority 1 goes to top of THIS group.
+                // - Priority 8 goes to bottom of THIS group.
+                // - 999 (No priority) stays in middle/random order.
+                groupFlights.sort((a, b) => a.sortPriority - b.sortPriority);
+
+                // D. Append to Global List
+                finalOrderedFlights.push(...groupFlights);
             });
 
-            // 3. Assign Tee Times based on Priority
-            // We have unassignedFlights. We need to map them to Slots 1, 2, 3...
-            // Logic:
-            // - Priority 1 -> Slot 1
-            // - Priority 8 -> Slot 8 (or Last)
-            // - Priority 0 -> Fill remaining empty slots randomly
-            
-            const totalFlights = unassignedFlights.length;
-            let finalFlightList = new Array(totalFlights).fill(null);
-
-            // Place specific priorities first
-            let remainingFlights = [];
-            
-            unassignedFlights.forEach(f => {
-                if (f.priority > 0 && f.priority <= totalFlights) {
-                    // Try to place at exact index (priority - 1)
-                    let index = f.priority - 1;
-                    if (finalFlightList[index] === null) {
-                        finalFlightList[index] = f;
-                    } else {
-                        // Conflict: Slot taken. Push to remaining (or handle logic)
-                        // For simplicity, treat as no priority if conflict
-                        remainingFlights.push(f); 
-                    }
-                } else {
-                    remainingFlights.push(f);
-                }
-            });
-
-            // Shuffle remaining flights to ensure randomness for non-priority
-            remainingFlights = shuffle(remainingFlights);
-
-            // Fill gaps
-            for (let i = 0; i < totalFlights; i++) {
-                if (finalFlightList[i] === null) {
-                    if (remainingFlights.length > 0) {
-                        finalFlightList[i] = remainingFlights.shift();
-                    }
-                }
-            }
-
-            // Clean up: If any flights were left (due to index out of bounds), append them
-            while(remainingFlights.length > 0) {
-                finalFlightList.push(remainingFlights.shift());
-            }
-            
-            // Remove nulls (just in case)
-            finalFlightList = finalFlightList.filter(f => f !== null);
-
-            // 4. Finalize Object Structure
-            currentFlights = finalFlightList.map((f, index) => ({
+            // 3. Assign Final Tee Times & Fly Numbers
+            currentFlights = finalOrderedFlights.map((f, index) => ({
                 flyNo: index + 1,
                 teeTime: calculateTeeTime(CONFIG.startTime, index, CONFIG.interval),
                 players: f.players,
@@ -505,7 +489,7 @@
                 totalHDC: f.totalHDC
             }));
 
-            // Save and Render
+            // Save
             localStorage.setItem(CONFIG.storageKey, JSON.stringify(currentFlights));
             updateStats(currentFlights);
             renderFlights();
@@ -554,7 +538,10 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="font-bold text-sm text-gray-800 truncate font-mono-tech uppercase" title="${p.name}">${p.name}</div>
-                            <div class="text-[10px] text-gray-400 font-bold bg-gray-100 inline-block px-1 rounded mt-1">VGA: ${p.vga}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] text-gray-500 font-bold bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">VGA: ${p.vga}</span>
+                                ${p.priority > 0 ? `<i class="fa-solid fa-star text-yellow-400 text-[10px]" title="Priority"></i>` : ''}
+                            </div>
                         </div>
                         <div class="ml-2">
                              <div class="badge-hdc-square">${p.hdc}</div>
@@ -562,15 +549,15 @@
                     </div>
                 `}).join('');
 
-                // Fill empty slots if < 4 players
+                // Fill empty slots
                 if(fly.players.length < 4) {
                     for(let i=0; i < (4 - fly.players.length); i++) {
                          playersHtml += `
-                         <div class="player-row opacity-30">
-                            <div class="player-avatar-wrapper bg-gray-200 border-gray-300">
-                                <i class="fa-solid fa-user text-gray-400"></i>
+                         <div class="player-row opacity-40">
+                            <div class="player-avatar-wrapper bg-slate-100 border-slate-200">
+                                <i class="fa-solid fa-user-plus text-slate-300"></i>
                             </div>
-                            <div class="flex-1 text-sm text-gray-400 italic">Empty Slot</div>
+                            <div class="flex-1 text-sm text-slate-400 italic font-mono">Available Slot</div>
                          </div>`;
                     }
                 }
@@ -579,12 +566,12 @@
                 card.className = "flight-card";
                 card.innerHTML = `
                     <div class="flight-header">
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 relative z-10">
                             <div class="flight-number-box">
                                 ${fly.flyNo}
                             </div>
                             <div>
-                                <div class="text-[10px] text-green-200 uppercase tracking-widest font-bold mb-0.5">FLIGHT</div>
+                                <div class="text-[10px] text-green-200 uppercase tracking-widest font-bold mb-0.5 opacity-80">FLIGHT</div>
                                 <div class="text-xl font-bold font-mono-tech flex items-center gap-2">
                                     <i class="fa-regular fa-clock text-xs"></i> ${fly.teeTime}
                                 </div>
@@ -594,7 +581,7 @@
                             GROUP ${fly.groupName}
                         </div>
                     </div>
-                    <div class="flex-grow bg-white">
+                    <div class="flex-grow bg-white relative">
                         ${playersHtml}
                     </div>
                 `;
@@ -610,7 +597,7 @@
                 });
             });
             navigator.clipboard.writeText(content).then(() => {
-                showToast("Đã copy dữ liệu! Hãy Paste vào Excel/Sheet.");
+                showToast("Đã copy dữ liệu! Hãy Paste (Ctrl+V) vào Excel.");
             });
         }
 
