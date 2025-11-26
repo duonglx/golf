@@ -14,16 +14,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* Global Font Setting */
         body { font-family: 'Montserrat', sans-serif; background-color: #f3f4f6; color: #1f2937; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
+        
+        /* Tùy chỉnh thanh cuộn */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #166534; }
+        ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 3px; }
 
-        /* Background Pattern */
+        /* Nền Golf Pattern */
         .bg-golf-pattern {
             background-color: #f0fdf4;
             background-image: 
@@ -37,141 +35,115 @@
             background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
         }
 
-        /* Modern Card Styling */
+        /* Card Style */
         .flight-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid rgba(0,0,0,0.05);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
-        
-        .flight-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-color: #10b981;
-        }
+        .flight-card:active { transform: scale(0.98); } /* Hiệu ứng nhấn trên mobile */
 
         /* Header Gradient */
         .header-bg {
-            background: linear-gradient(rgba(6, 78, 59, 0.9), rgba(6, 78, 59, 0.95)), 
+            background: linear-gradient(rgba(6, 78, 59, 0.92), rgba(6, 78, 59, 0.96)), 
                         url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
         }
         
-        /* Card Header Gradient (Golf Style) */
-        .card-header-bg {
-            background: #065f46; /* Emerald 800 */
-            position: relative;
-        }
+        .card-header-bg { background: #065f46; position: relative; }
 
         /* Loading Spinner */
         .spinner-ring {
-            display: inline-block;
-            width: 60px;
-            height: 60px;
+            display: inline-block; width: 50px; height: 50px;
         }
         .spinner-ring:after {
-            content: " ";
-            display: block;
-            width: 48px;
-            height: 48px;
-            margin: 6px;
-            border-radius: 50%;
-            border: 4px solid #fff;
+            content: " "; display: block; width: 40px; height: 40px; margin: 5px;
+            border-radius: 50%; border: 3px solid #fff;
             border-color: #fff transparent #fff transparent;
             animation: ring-spin 1.2s linear infinite;
         }
         @keyframes ring-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Badge Styles */
-        .vga-badge { font-size: 0.65rem; background: #f3f4f6; color: #6b7280; padding: 2px 6px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px; }
+        /* Badges */
+        .vga-badge { font-size: 0.6rem; background: #f3f4f6; color: #4b5563; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
         .hdc-badge { 
-            background: #15803d; /* Green 700 */
-            color: white; 
-            min-width: 32px; height: 32px; 
-            padding: 0 6px;
+            background: #15803d; color: white; 
+            min-width: 30px; height: 30px; 
             display: flex; align-items: center; justify-content: center;
-            border-radius: 6px;
-            font-weight: 700; 
-            font-size: 0.9rem;
+            border-radius: 6px; font-weight: 700; font-size: 0.85rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-
-        /* Gala Button Animation */
-        .gala-btn:hover .map-icon { transform: scale(1.2) rotate(10deg); color: #fbbf24; }
+        
+        /* Gala Button */
+        .gala-btn:active { background-color: rgba(255,255,255,0.2); }
     </style>
 </head>
-<body class="bg-golf-pattern min-h-screen flex flex-col">
+<body class="bg-golf-pattern min-h-screen flex flex-col overflow-x-hidden">
 
-    <div id="loading-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900 text-white transition-opacity duration-700">
+    <div id="loading-overlay" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-900 text-white transition-opacity duration-700">
         <div class="relative">
             <div class="absolute inset-0 bg-green-500 blur-2xl opacity-20 rounded-full"></div>
             <div class="spinner-ring relative z-10"></div>
             <i class="fa-solid fa-golf-ball-tee absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-green-400 text-sm"></i>
         </div>
-        
-        <h2 class="mt-6 text-2xl font-bold tracking-wider">SYNCING DATA</h2>
-        <p class="text-green-400 text-xs font-medium mt-2 tracking-widest uppercase animate-pulse">Connecting to server...</p>
-        
-        <div class="w-64 h-1 bg-gray-800 mt-6 rounded-full overflow-hidden">
+        <h2 class="mt-4 text-xl font-bold tracking-wider">ĐANG TẢI DỮ LIỆU</h2>
+        <div class="w-48 h-1 bg-gray-800 mt-4 rounded-full overflow-hidden">
             <div id="loading-bar" class="h-full bg-green-500 w-0 transition-all duration-1000 ease-out"></div>
         </div>
     </div>
 
     <header class="header-bg text-white shadow-xl relative z-40 sticky top-0">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+        <div class="container mx-auto px-4 py-3 md:py-5">
+            <div class="flex flex-col gap-4">
                 
-                <div class="flex items-center gap-4 w-full lg:w-auto">
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg flex-shrink-0">
-                        <i class="fa-solid fa-trophy text-yellow-400 text-xl md:text-2xl"></i>
-                    </div>
-                    <div>
-                        <div class="text-[10px] md:text-xs font-bold text-green-300 tracking-[0.2em] uppercase mb-0.5">Official Tournament</div>
-                        <h1 class="text-lg md:text-2xl font-extrabold text-white leading-tight uppercase">WOB Outing 2025</h1>
-                        <div class="flex flex-wrap items-center gap-3 text-xs md:text-sm text-gray-200 mt-1 font-medium">
-                            <span><i class="fa-regular fa-calendar mr-1.5"></i>28/11/2025</span>
-                            <span class="hidden md:inline w-1 h-1 bg-gray-400 rounded-full"></span>
-                            <span><i class="fa-solid fa-location-dot mr-1.5"></i>Sân Đông - Thủ Đức</span>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <div class="w-10 h-10 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg flex-shrink-0">
+                            <i class="fa-solid fa-trophy text-yellow-400 text-lg md:text-2xl"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="text-[9px] md:text-xs font-bold text-green-300 tracking-wider uppercase">Official Tournament</div>
+                            <h1 class="text-lg md:text-2xl font-extrabold text-white leading-tight uppercase">WOB Outing 2025</h1>
+                            <div class="flex items-center gap-2 text-[10px] md:text-sm text-gray-200 mt-0.5 font-medium">
+                                <span><i class="fa-regular fa-calendar mr-1"></i>28/11</span>
+                                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                                <span><i class="fa-solid fa-location-dot mr-1"></i>Thủ Đức</span>
+                            </div>
                         </div>
                     </div>
+
+                    <a href="https://maps.app.goo.gl/S6vZp2oQR5VaLrvL8" target="_blank" 
+                       class="gala-btn w-full md:w-auto bg-white/10 border border-white/20 rounded-xl p-2 flex items-center gap-3 cursor-pointer hover:border-yellow-400/50 transition-colors">
+                        <div class="bg-yellow-500/20 p-2 rounded-lg flex-shrink-0">
+                            <i class="fa-solid fa-utensils text-yellow-300 text-sm"></i>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <div class="flex justify-between md:justify-start items-center gap-2">
+                                <span class="text-[10px] font-bold text-yellow-200 uppercase">Tiệc 12:30</span>
+                                <span class="text-[10px] text-gray-300">Mr HảiLH</span>
+                            </div>
+                            <div class="font-bold text-white text-xs truncate flex items-center gap-1">
+                                Nhà hàng Seasan <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60"></i>
+                            </div>
+                        </div>
+                    </a>
                 </div>
 
-                <a href="https://maps.app.goo.gl/S6vZp2oQR5VaLrvL8" target="_blank" 
-                   class="gala-btn w-full lg:w-auto group relative overflow-hidden bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-xl p-2.5 flex items-center gap-3 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:border-yellow-400/50 cursor-pointer">
-                    
-                    <div class="bg-yellow-500/20 p-2.5 rounded-lg group-hover:bg-yellow-500/30 transition flex-shrink-0">
-                        <i class="fa-solid fa-utensils text-yellow-300 text-lg"></i>
-                    </div>
-                    
-                    <div class="flex-grow min-w-0 pr-6">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] bg-yellow-500/20 text-yellow-200 px-1.5 rounded font-bold uppercase tracking-wider">Tiệc 12:30</span>
-                            <span class="text-[10px] text-gray-300">Booking: Mr HảiLH</span>
-                        </div>
-                        <div class="font-bold text-white text-sm truncate mt-0.5 flex items-center gap-1">
-                            Nhà hàng Seasan <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-50"></i>
-                        </div>
-                    </div>
-
-                    <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-100 transition duration-500">
-                        <i class="fa-solid fa-map-location-dot text-2xl map-icon transition-transform duration-500"></i>
-                    </div>
-                </a>
-
-                <div class="w-full lg:w-80 relative group">
+                <div class="relative w-full group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-green-400 transition-colors"></i>
+                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                     </div>
                     <input type="text" id="searchInput" onkeyup="filterFlights()"
-                        class="block w-full pl-10 pr-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:bg-white/20 focus:border-green-400 transition-all text-base font-medium" 
-                        placeholder="Tìm tên Golfer / VGA...">
-                    <div id="search-count" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[10px] font-bold bg-green-600 px-2 py-0.5 rounded text-white hidden">
+                        class="block w-full pl-10 pr-12 py-2.5 bg-white/95 backdrop-blur text-gray-900 rounded-lg border-0 focus:ring-2 focus:ring-green-400 placeholder:text-gray-500 text-base font-medium shadow-lg transition-all" 
+                        placeholder="Tìm tên Golfer hoặc VGA...">
+                    <div id="search-count" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded hidden">
                         0
                     </div>
                 </div>
@@ -180,39 +152,33 @@
         <div class="h-1 w-full bg-gradient-to-r from-yellow-400 via-green-500 to-emerald-600"></div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 relative z-0">
-        <div class="flex justify-between items-end mb-6 border-b border-gray-200 pb-2">
-            <div>
-                <h2 class="text-xl font-bold text-gray-800">Danh sách Flight</h2>
-                <p class="text-sm text-gray-500 mt-1">Sắp xếp theo thứ tự phát bóng</p>
-            </div>
-            <div class="text-right hidden md:block">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Tổng người chơi</span>
-                <div class="text-2xl font-extrabold text-green-700 leading-none" id="total-players-count">--</div>
+    <main class="flex-grow container mx-auto px-4 py-6 relative z-0">
+        
+        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
+            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-list-ol text-green-600"></i> Danh sách Flight
+            </h2>
+            <div class="bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                <span class="text-xs font-bold text-gray-500">Tổng: <span id="total-players-count" class="text-green-700 text-sm">--</span></span>
             </div>
         </div>
 
-        <div id="fly-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-all duration-300 opacity-0">
+        <div id="fly-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-300 opacity-0">
             </div>
 
-        <div id="no-result" class="hidden flex flex-col items-center justify-center py-16 text-center">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <i class="fa-solid fa-user-slash text-gray-400 text-2xl"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-700">Không tìm thấy Golfer</h3>
-            <p class="text-gray-500 text-sm mt-1">Vui lòng kiểm tra lại tên hoặc mã VGA.</p>
+        <div id="no-result" class="hidden flex flex-col items-center justify-center py-12 text-center">
+            <i class="fa-solid fa-user-slash text-gray-300 text-3xl mb-2"></i>
+            <p class="text-gray-500 text-sm font-medium">Không tìm thấy kết quả.</p>
         </div>
     </main>
 
-    <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
+    <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-1">
                 <i class="fa-solid fa-golf-ball-tee text-green-600"></i>
-                <span class="font-bold text-gray-800 text-sm tracking-wide">WOB GOLF SYSTEM</span>
+                <span class="font-bold text-gray-800 text-xs tracking-wide">WOB GOLF SYSTEM</span>
             </div>
-            <p class="text-xs text-gray-400 font-medium">
-                © 2025 All Rights Reserved. Data synced via Google Sheets.
-            </p>
+            <p class="text-[10px] text-gray-400">Data synced via Google Sheets.</p>
         </div>
     </footer>
 
@@ -220,21 +186,19 @@
         // --- CONFIGURATION ---
         const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv";
 
-        // Backup Data (Dùng khi lỗi mạng)
         const BACKUP_DATA = [
             { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player", VGA: "12345", Handicap: 20, AvatarURL: "" }
         ];
 
         let allFlightsData = [];
 
-        // --- INITIALIZATION ---
+        // --- INIT ---
         window.addEventListener('DOMContentLoaded', () => {
             const loadingBar = document.getElementById('loading-bar');
-            setTimeout(() => { loadingBar.style.width = '40%'; }, 100);
+            setTimeout(() => { loadingBar.style.width = '50%'; }, 100);
             fetchData();
         });
 
-        // --- FETCH DATA ---
         function fetchData() {
             const loadingBar = document.getElementById('loading-bar');
             const overlay = document.getElementById('loading-overlay');
@@ -247,49 +211,39 @@
                 complete: function(results) {
                     loadingBar.style.width = '100%';
                     processData(results.data);
-                    
                     setTimeout(() => {
                         overlay.style.opacity = '0';
                         grid.classList.remove('opacity-0');
                         setTimeout(() => { overlay.classList.add('hidden'); }, 700);
-                    }, 800);
+                    }, 600);
                 },
                 error: function(err) {
-                    console.error("Error fetching Google Sheet:", err);
+                    console.error("Error:", err);
                     processData(BACKUP_DATA);
-                    
                     loadingBar.style.width = '100%';
                     setTimeout(() => {
                         overlay.style.opacity = '0';
                         grid.classList.remove('opacity-0');
                         setTimeout(() => { overlay.classList.add('hidden'); }, 700);
-                    }, 800);
+                    }, 600);
                 }
             });
         }
 
-        // --- HELPER: GENERATE CORRECT AVATAR URL (FIX V9 ERROR) ---
+        // Fix Avatar v9 DiceBear
         function generateSafeAvatar(name, originalSeed) {
-            const validStyles = [
-                "shortFlat", "shortRound", "shortWaved", 
-                "sides", "theCaesar", "theCaesarSidePart", 
-                "dreads", "curly", "shavedSides"
-            ];
-            
+            const validStyles = ["shortFlat", "shortRound", "shortWaved", "sides", "theCaesar", "theCaesarSidePart", "dreads", "curly", "shavedSides"];
             const styleParams = validStyles.map(s => `top[]=${s}`).join('&');
             const seed = originalSeed || name.replace(/\s/g, '');
-            
             return `https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_${seed}&${styleParams}&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede`;
         }
 
-        // --- PROCESS DATA ---
         function processData(rawData) {
             const grouped = {};
             let totalPlayers = 0;
 
             rawData.forEach(item => {
                 if(!item.FlyNo || !item.PlayerName) return;
-
                 const flyNo = parseInt(item.FlyNo);
                 if(isNaN(flyNo)) return;
 
@@ -301,7 +255,6 @@
                     };
                 }
 
-                // Tự động FIX link avatar bị lỗi
                 const safeAvatar = generateSafeAvatar(item.PlayerName, item.VGA);
 
                 grouped[flyNo].players.push({
@@ -310,7 +263,6 @@
                     hdc: item.Handicap || 0,
                     avatar: safeAvatar 
                 });
-
                 totalPlayers++;
             });
 
@@ -319,7 +271,6 @@
             renderFlights(allFlightsData);
         }
 
-        // --- RENDER FLIGHTS ---
         function renderFlights(data) {
             const grid = document.getElementById('fly-grid');
             grid.innerHTML = '';
@@ -332,61 +283,50 @@
             }
 
             data.forEach(fly => {
-                // Players List
-                const playersHtml = fly.players.map((p, index) => `
-                    <div class="flex items-center gap-3 py-3 px-3 hover:bg-gray-50 transition border-b border-gray-200 border-dashed last:border-0">
+                const playersHtml = fly.players.map(p => `
+                    <div class="flex items-center gap-3 py-2.5 px-3 hover:bg-gray-50 transition border-b border-gray-100 border-dashed last:border-0">
                         <div class="relative flex-shrink-0">
-                            <img src="${p.avatar}" alt="${p.name}" 
-                                 class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm bg-gray-100"
+                            <img src="${p.avatar}" class="w-9 h-9 rounded-full object-cover border border-gray-200 bg-gray-100" 
                                  onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=random'">
                         </div>
-                        
                         <div class="flex-grow min-w-0">
-                            <div class="text-sm font-bold text-gray-800 truncate leading-tight">${p.name}</div>
+                            <div class="text-xs md:text-sm font-bold text-gray-800 truncate">${p.name}</div>
                             <div class="mt-0.5"><span class="vga-badge">VGA: ${p.vga}</span></div>
                         </div>
-
-                        <div class="flex-shrink-0 text-center pl-2">
-                            <div class="hdc-badge" title="Handicap">
-                                ${p.hdc}
-                            </div>
+                        <div class="flex-shrink-0">
+                            <div class="hdc-badge">${p.hdc}</div>
                         </div>
                     </div>
                 `).join('');
 
-                // Card
                 const card = document.createElement('div');
                 card.className = "flight-card";
                 card.innerHTML = `
-                    <div class="card-header-bg p-4 flex justify-between items-center text-white shadow-sm">
+                    <div class="card-header-bg px-4 py-3 flex justify-between items-center text-white shadow-sm">
                         <div class="flex items-center gap-3 relative z-10">
-                            <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center border border-white/30 text-yellow-300 font-extrabold text-xl shadow-inner">
+                            <div class="w-9 h-9 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center border border-white/30 text-yellow-300 font-extrabold text-lg shadow-inner">
                                 ${fly.flyNo}
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-[10px] font-bold text-green-100 uppercase tracking-widest leading-none mb-0.5 opacity-80">Flight</span>
-                                <span class="text-white font-bold font-mono text-lg leading-tight flex items-center gap-2">
-                                    <i class="fa-regular fa-clock text-xs opacity-80"></i> ${fly.teeTime}
+                                <span class="text-[9px] font-bold text-green-100 uppercase tracking-widest leading-none mb-0.5 opacity-80">Flight</span>
+                                <span class="text-white font-bold font-mono text-base leading-tight flex items-center gap-1.5">
+                                    <i class="fa-regular fa-clock text-[10px] opacity-80"></i> ${fly.teeTime}
                                 </span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="bg-gray-100 px-4 py-1.5 flex justify-between items-center border-b border-gray-200">
-                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider pl-12">Golfer</span>
-                        <span class="text-[10px] font-bold text-green-700 uppercase tracking-wider pr-1">HDC</span>
+                    <div class="bg-gray-50 px-3 py-1.5 flex justify-between items-center border-b border-gray-100">
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider pl-11">Golfer</span>
+                        <span class="text-[9px] font-bold text-green-700 uppercase tracking-wider pr-1">HDC</span>
                     </div>
-
-                    <div class="pb-2 flex-grow flex flex-col justify-center">
+                    <div class="pb-2 flex-grow flex flex-col justify-center bg-white">
                         ${playersHtml}
                     </div>
                 `;
-
                 grid.appendChild(card);
             });
         }
 
-        // --- SEARCH FUNCTION ---
         function filterFlights() {
             const input = document.getElementById('searchInput');
             const term = input.value.toLowerCase().trim();
