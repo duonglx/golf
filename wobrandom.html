@@ -6,7 +6,7 @@
     <title>WOB Year-End Outing 2025 - Pairing System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     
     <style>
@@ -16,8 +16,11 @@
             --accent-gold: #fbbf24;   /* Amber 400 */
         }
 
+        /* GLOBAL FONT SETTING */
         body { font-family: 'Montserrat', sans-serif; background-color: #f0fdf4; }
-        .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+        
+        /* OVERRIDE TECHNICAL FONT TO MONTSERRAT */
+        .font-mono-tech { font-family: 'Montserrat', sans-serif !important; letter-spacing: -0.02em; }
 
         /* Background Pattern */
         .bg-golf {
@@ -66,9 +69,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 26px;
-            font-weight: bold;
+            font-family: 'Montserrat', sans-serif; /* Changed */
+            font-size: 24px;
+            font-weight: 800; /* Extra Bold for Numbers */
             color: #fbbf24; 
             border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -82,6 +85,7 @@
             border-radius: 99px;
             font-size: 13px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-family: 'Montserrat', sans-serif;
         }
 
         /* Player List Styles */
@@ -123,8 +127,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
+            font-family: 'Montserrat', sans-serif; /* Changed */
+            font-weight: 700;
             font-size: 15px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
@@ -148,10 +152,13 @@
             animation: spin-right 2s linear infinite;
         }
         @keyframes spin-right { 100% { transform: rotate(360deg); } }
+        
         .decipher-text {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'Montserrat', sans-serif; /* Changed */
+            font-weight: 800;
             text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
             color: #fbbf24;
+            letter-spacing: 0.05em;
         }
         .modal-enter { animation: modalIn 0.3s ease-out forwards; }
         @keyframes modalIn {
@@ -169,9 +176,9 @@
                 <i class="fa-solid fa-golf-ball-tee text-5xl text-yellow-400 animate-pulse"></i>
             </div>
             <div class="text-center space-y-2">
-                <p class="text-green-200 text-xs font-mono-tech tracking-[0.2em] uppercase">System Processing</p>
-                <h2 id="magic-name" class="text-3xl md:text-5xl font-bold text-white decipher-text min-h-[60px]">INITIALIZING...</h2>
-                <p id="magic-status" class="text-green-200 text-sm font-mono-tech">Fetching Data...</p>
+                <p class="text-green-200 text-xs font-bold tracking-[0.2em] uppercase">System Processing</p>
+                <h2 id="magic-name" class="text-3xl md:text-5xl font-extrabold text-white decipher-text min-h-[60px]">INITIALIZING...</h2>
+                <p id="magic-status" class="text-green-200 text-sm font-medium">Fetching Data...</p>
             </div>
             <div class="w-80 h-1 bg-green-900 mt-8 rounded-full overflow-hidden relative border border-green-700">
                 <div id="magic-progress" class="h-full bg-yellow-400 w-0 shadow-[0_0_10px_rgba(251,191,36,0.8)]"></div>
@@ -189,17 +196,21 @@
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="p-6">
-                <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                <p class="text-slate-600 text-sm leading-relaxed mb-3 font-medium">
                     Hệ thống sẽ tải lại dữ liệu từ Google Sheet và xử lý:
                 </p>
-                <ul class="text-xs text-slate-500 space-y-2 pl-2 border-l-2 border-green-200 ml-1">
+                <ul class="text-xs text-slate-500 space-y-2 pl-2 border-l-2 border-green-200 ml-1 font-medium">
                     <li class="flex items-start gap-2">
                         <span class="font-bold text-green-700">1.</span>
-                        <span>Chia tuyệt đối theo cột <b>Group</b> (A trước, B sau). Không xét HDC để chia bảng.</span>
+                        <span>Chia ngẫu nhiên theo <b>Bảng</b> (A trước, B sau).</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold text-green-700">2.</span>
-                        <span>Người chơi <b>IsRandom = N</b> sẽ được gom lại và xếp theo HDC thấp -> cao.</span>
+                        <span>Bảng <b>A</b> sẽ được chia theo HDC <=23</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="font-bold text-green-700">2.</span>
+                        <span>Bảng <b>A</b> sẽ được chia theo HDC >23.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold text-green-700">3.</span>
@@ -208,8 +219,8 @@
                 </ul>
             </div>
             <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-100">
-                <button onclick="closeModal()" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-600 hover:bg-gray-200 transition border border-gray-300">Hủy</button>
-                <button onclick="confirmReshuffle()" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-green-700 hover:bg-green-800 shadow-lg transition flex items-center gap-2">
+                <button onclick="closeModal()" class="px-5 py-2.5 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-200 transition border border-gray-300">Hủy</button>
+                <button onclick="confirmReshuffle()" class="px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-green-700 hover:bg-green-800 shadow-lg transition flex items-center gap-2">
                     <i class="fa-solid fa-play"></i> Bắt đầu
                 </button>
             </div>
@@ -226,12 +237,12 @@
                     </div>
                     <div>
                         <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-lg uppercase">WOB YEAR-END OUTING 2025</h1>
-                        <p class="text-gray-300 text-sm font-medium mt-1 font-mono-tech tracking-wide"><i class="fa-solid fa-location-dot mr-2 text-yellow-400"></i>Sân Đông - Thủ Đức | 28/11/2025</p>
+                        <p class="text-gray-300 text-sm font-semibold mt-1 tracking-wide"><i class="fa-solid fa-location-dot mr-2 text-yellow-400"></i>Sân Đông - Thủ Đức | 28/11/2025</p>
                     </div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 text-sm min-w-[200px] shadow-lg text-center">
-                    <div class="text-gray-300 text-xs uppercase tracking-wider mb-1">Tổng người chơi</div>
-                    <div class="font-mono-tech text-3xl font-bold text-yellow-400" id="total-players-display">--</div>
+                    <div class="text-gray-300 text-xs uppercase tracking-wider mb-1 font-bold">Tổng người chơi</div>
+                    <div class="text-3xl font-extrabold text-yellow-400" id="total-players-display">--</div>
                 </div>
             </div>
             <div class="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-4">
@@ -255,12 +266,12 @@
     </main>
 
     <footer class="bg-slate-900 text-slate-500 py-6 text-center text-xs border-t border-slate-800">
-        <p class="font-mono-tech">POWERED BY WOB GOLF TECH v3.0 (STRICT GROUP)</p>
+        <p class="font-bold tracking-wider">WOB GOLF v1.1</p>
     </footer>
 
     <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl z-50 transition-all duration-300 opacity-0 translate-y-10 flex items-center gap-3">
         <i class="fa-solid fa-circle-check text-green-400"></i>
-        <span id="toast-msg">Thông báo hệ thống</span>
+        <span id="toast-msg" class="font-medium">Thông báo hệ thống</span>
     </div>
 
     <script>
@@ -269,7 +280,6 @@
             startDate: "28/11/2025",
             startTime: "06:37", 
             interval: 7,        
-            // CHANGE KEY TO FORCE REFRESH
             storageKey: "WOB_OUTING_STRICT_V3_FINAL", 
             sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?gid=2114872903&single=true&output=csv"
         };
@@ -295,20 +305,15 @@
                     download: true,
                     header: true,
                     skipEmptyLines: true,
-                    // FIX: Transform headers to standard format (Trim + Lowercase) to avoid mismatches
                     transformHeader: function(h) {
                         return h.trim().toLowerCase();
                     },
                     complete: function(results) {
-                        console.log("Parsed Headers:", results.meta.fields); // Debug
-                        
                         const cleaned = results.data.map(row => {
-                            // Map robustly using lowercase keys
                             return {
                                 name: row['playername'] || "Unknown",
                                 vga: row['vga'] || "N/A",
                                 hdc: parseInt(row['handicap']) || 0,
-                                // STRICT LOGIC: Get Group, Trim, Uppercase. Default to A only if empty.
                                 group: row['group'] ? row['group'].trim().toUpperCase() : "A",
                                 isRandom: row['israndom'] ? row['israndom'].trim().toUpperCase() : "Y",
                                 priority: parseInt(row['priorityflytime']) || 0
@@ -345,7 +350,6 @@
             progressBar.style.width = '10%';
             
             try {
-                // 1. CLEAR OLD DATA
                 localStorage.removeItem(CONFIG.storageKey);
                 
                 magicStatus.innerText = "Downloading CSV...";
@@ -376,36 +380,25 @@
 
         // --- STRICT GROUP LOGIC ---
         function generateFlightsStrictLogic() {
-            // 1. Get Distinct Groups and Sort them (A, B, C...)
             const distinctGroups = [...new Set(rawPlayers.map(p => p.group))].sort();
-            
             let finalOrderedFlights = [];
 
-            // 2. Iterate Strictly by Group Name
             distinctGroups.forEach(groupName => {
-                // FILTER: Only players belonging to this group
-                // Note: No HDC check here. Just group match.
                 const groupPlayers = rawPlayers.filter(p => p.group === groupName);
 
                 if (groupPlayers.length === 0) return;
 
-                // Split Fixed vs Random
                 let fixed = groupPlayers.filter(p => p.isRandom === 'N');
                 let random = groupPlayers.filter(p => p.isRandom !== 'N');
 
-                // Sort Fixed by HDC (Low -> High)
                 fixed.sort((a, b) => a.hdc - b.hdc);
-                
-                // Shuffle Random
                 random = shuffle(random);
 
                 let currentGroupFlights = [];
 
-                // Helper to chunk list into flights
                 const processList = (list) => {
                     while(list.length > 0) {
                         const chunk = list.splice(0, 4);
-                        // Find priority (Min value = High priority)
                         let pValues = chunk.map(p => p.priority).filter(p => p > 0);
                         let flightPriority = pValues.length > 0 ? Math.min(...pValues) : 999;
 
@@ -421,14 +414,10 @@
                 processList(fixed);
                 processList(random);
 
-                // Sort flights within this group by Priority
                 currentGroupFlights.sort((a, b) => a.sortPriority - b.sortPriority);
-
-                // Append to master list
                 finalOrderedFlights.push(...currentGroupFlights);
             });
 
-            // 3. Assign Tee Times
             currentFlights = finalOrderedFlights.map((f, index) => ({
                 flyNo: index + 1,
                 teeTime: calculateTeeTime(CONFIG.startTime, index, CONFIG.interval),
@@ -482,7 +471,7 @@
                                  onerror="this.parentNode.innerHTML='${initials}'" alt="${p.name}">
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm text-gray-800 truncate font-mono-tech uppercase" title="${p.name}">${p.name}</div>
+                            <div class="font-bold text-sm text-gray-800 truncate uppercase" title="${p.name}">${p.name}</div>
                             <div class="flex items-center gap-2 mt-1">
                                 <span class="text-[10px] text-gray-500 font-bold bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">VGA: ${p.vga}</span>
                                 ${p.priority > 0 ? `<i class="fa-solid fa-star text-yellow-400 text-[10px]" title="Priority"></i>` : ''}
@@ -501,7 +490,7 @@
                             <div class="player-avatar-wrapper bg-slate-100 border-slate-200">
                                 <i class="fa-solid fa-user-plus text-slate-300"></i>
                             </div>
-                            <div class="flex-1 text-sm text-slate-400 italic font-mono">Available Slot</div>
+                            <div class="flex-1 text-sm text-slate-400 italic font-medium">Available Slot</div>
                          </div>`;
                     }
                 }
@@ -514,7 +503,7 @@
                             <div class="flight-number-box">${fly.flyNo}</div>
                             <div>
                                 <div class="text-[10px] text-green-200 uppercase tracking-widest font-bold mb-0.5 opacity-80">FLIGHT</div>
-                                <div class="text-xl font-bold font-mono-tech flex items-center gap-2">
+                                <div class="text-xl font-bold flex items-center gap-2">
                                     <i class="fa-regular fa-clock text-xs"></i> ${fly.teeTime}
                                 </div>
                             </div>
