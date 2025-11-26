@@ -101,6 +101,9 @@
             font-size: 0.9rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+
+        /* Gala Button Animation */
+        .gala-btn:hover .map-icon { transform: scale(1.2) rotate(10deg); color: #fbbf24; }
     </style>
 </head>
 <body class="bg-golf-pattern min-h-screen flex flex-col">
@@ -121,30 +124,53 @@
     </div>
 
     <header class="header-bg text-white shadow-xl relative z-40 sticky top-0">
-        <div class="container mx-auto px-4 py-4 md:py-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-4 w-full md:w-auto">
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                
+                <div class="flex items-center gap-4 w-full lg:w-auto">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg flex-shrink-0">
                         <i class="fa-solid fa-trophy text-yellow-400 text-xl md:text-2xl"></i>
                     </div>
                     <div>
                         <div class="text-[10px] md:text-xs font-bold text-green-300 tracking-[0.2em] uppercase mb-0.5">Official Tournament</div>
-                        <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight uppercase">WOB Outing 2025</h1>
-                        <div class="flex items-center gap-3 text-xs md:text-sm text-gray-200 mt-1 font-medium">
+                        <h1 class="text-lg md:text-2xl font-extrabold text-white leading-tight uppercase">WOB Outing 2025</h1>
+                        <div class="flex flex-wrap items-center gap-3 text-xs md:text-sm text-gray-200 mt-1 font-medium">
                             <span><i class="fa-regular fa-calendar mr-1.5"></i>28/11/2025</span>
-                            <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                            <span class="hidden md:inline w-1 h-1 bg-gray-400 rounded-full"></span>
                             <span><i class="fa-solid fa-location-dot mr-1.5"></i>Sân Đông - Thủ Đức</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full md:w-96 relative group">
+                <a href="https://maps.app.goo.gl/S6vZp2oQR5VaLrvL8" target="_blank" 
+                   class="gala-btn w-full lg:w-auto group relative overflow-hidden bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-xl p-2.5 flex items-center gap-3 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:border-yellow-400/50 cursor-pointer">
+                    
+                    <div class="bg-yellow-500/20 p-2.5 rounded-lg group-hover:bg-yellow-500/30 transition flex-shrink-0">
+                        <i class="fa-solid fa-utensils text-yellow-300 text-lg"></i>
+                    </div>
+                    
+                    <div class="flex-grow min-w-0 pr-6">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-yellow-500/20 text-yellow-200 px-1.5 rounded font-bold uppercase tracking-wider">Tiệc 12:30</span>
+                            <span class="text-[10px] text-gray-300">Booking: Mr HảiLH</span>
+                        </div>
+                        <div class="font-bold text-white text-sm truncate mt-0.5 flex items-center gap-1">
+                            Nhà hàng Seasan <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-50"></i>
+                        </div>
+                    </div>
+
+                    <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-100 transition duration-500">
+                        <i class="fa-solid fa-map-location-dot text-2xl map-icon transition-transform duration-500"></i>
+                    </div>
+                </a>
+
+                <div class="w-full lg:w-80 relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-green-400 transition-colors"></i>
                     </div>
                     <input type="text" id="searchInput" onkeyup="filterFlights()"
                         class="block w-full pl-10 pr-4 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:bg-white/20 focus:border-green-400 transition-all text-sm font-medium" 
-                        placeholder="Tìm kiếm Golfer (Tên hoặc VGA)...">
+                        placeholder="Tìm tên Golfer / VGA...">
                     <div id="search-count" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[10px] font-bold bg-green-600 px-2 py-0.5 rounded text-white hidden">
                         0
                     </div>
@@ -196,8 +222,7 @@
 
         // Backup Data (Dùng khi lỗi mạng)
         const BACKUP_DATA = [
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng", VGA: "47824", Handicap: 21, AvatarURL: "" },
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20, AvatarURL: "" }
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player", VGA: "12345", Handicap: 20, AvatarURL: "" }
         ];
 
         let allFlightsData = [];
@@ -245,18 +270,13 @@
 
         // --- HELPER: GENERATE CORRECT AVATAR URL (FIX V9 ERROR) ---
         function generateSafeAvatar(name, originalSeed) {
-            // Danh sách style tóc ngắn CHUẨN cho bản v9
-            // Loại bỏ hoàn toàn các style gây lỗi 400
             const validStyles = [
                 "shortFlat", "shortRound", "shortWaved", 
                 "sides", "theCaesar", "theCaesarSidePart", 
                 "dreads", "curly", "shavedSides"
             ];
             
-            // Tạo query string mới
             const styleParams = validStyles.map(s => `top[]=${s}`).join('&');
-            
-            // Dùng seed từ tên người chơi để cố định avatar (nếu không có seed riêng)
             const seed = originalSeed || name.replace(/\s/g, '');
             
             return `https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_${seed}&${styleParams}&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede`;
@@ -281,8 +301,7 @@
                     };
                 }
 
-                // Tự động FIX link avatar bị lỗi từ file CSV
-                // Thay vì dùng link cũ, ta tạo link mới chuẩn v9
+                // Tự động FIX link avatar bị lỗi
                 const safeAvatar = generateSafeAvatar(item.PlayerName, item.VGA);
 
                 grouped[flyNo].players.push({
