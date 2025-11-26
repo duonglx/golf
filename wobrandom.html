@@ -3,166 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WOB Golf Tournament Pairing</title>
+    <title>WOB Year-End Outing 2025 - Pairing System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
+    
     <style>
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: #f3f4f6; /* Light Gray */
-            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-            background-size: 20px 20px;
+        /* --- CORE THEME --- */
+        :root {
+            --primary-green: #064e3b; /* Emerald 900 */
+            --accent-gold: #fbbf24;   /* Amber 400 */
+            --glass-bg: rgba(255, 255, 255, 0.1);
         }
+
+        body { font-family: 'Montserrat', sans-serif; background-color: #f0fdf4; }
         .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
 
-        /* Card Styles */
+        /* Background Pattern */
+        .bg-golf {
+            background-color: #064e3b;
+            background-image: radial-gradient(#065f46 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- CARD DESIGN (MATCHING UPLOADED IMAGE) --- */
         .flight-card {
+            background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            height: 100%;
         }
+        
         .flight-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        /* Header Card Style */
-        .card-header {
-            background-color: #064e3b; /* Emerald 900 */
+        /* Header Style */
+        .flight-header {
+            background-color: #14532d; /* Emerald 900 custom */
             color: white;
-            padding: 1rem;
-            position: relative;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        
+
         .flight-number-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            width: 40px;
+            height: 40px;
             border-radius: 8px;
-            width: 45px;
-            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.5rem;
-            color: #facc15; /* Gold */
+            font-size: 24px;
             font-weight: bold;
+            color: #fbbf24; /* Gold text */
+            border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        /* Player Row Style */
-        .player-row {
-            border-bottom: 1px dashed #e5e7eb;
+        .group-badge {
+            background-color: white;
+            color: #14532d;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+
+        /* Player List Styles */
+        .player-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px dashed #e2e8f0; /* Dashed border */
+        }
+        
         .player-row:last-child {
             border-bottom: none;
         }
 
-        /* Badges */
-        .badge-hdc {
-            background-color: #10b981; /* Emerald 500 */
-            color: white;
-            font-family: 'Share Tech Mono', monospace;
-            border-radius: 6px;
-            padding: 2px 8px;
-            font-weight: bold;
-            min-width: 35px;
-            text-align: center;
-        }
-        
-        .badge-vga {
-            background-color: #f3f4f6;
-            color: #6b7280;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 2px;
-        }
-
-        .avatar-circle {
-            background: #f0fdf4;
-            color: #166534;
-            font-weight: bold;
+        .player-avatar-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #d1fae5;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-weight: bold;
+            color: #065f46;
+            overflow: hidden;
             border: 2px solid #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Loading Overlay */
-        #loading-overlay {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
+        .badge-hdc-square {
+            background-color: #15803d; /* Green 700 */
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* --- MAGIC HUD ANIMATION STYLES (Keep existing) --- */
+        #magic-overlay {
+            background: rgba(6, 78, 59, 0.98);
+            backdrop-filter: blur(20px);
+        }
+        
+        .hud-circle {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        .hud-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #fbbf24; 
+            border-right-color: #f59e0b;
+            animation: spin-right 2s linear infinite;
+        }
+
+        @keyframes spin-right { 100% { transform: rotate(360deg); } }
+
+        .decipher-text {
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+            color: #fbbf24;
+        }
+
+        /* Modal Animation */
+        .modal-enter { animation: modalIn 0.3s ease-out forwards; }
+        
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col text-slate-800">
+<body class="min-h-screen flex flex-col text-slate-800 bg-gray-50">
 
-    <div id="loading-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center">
-        <div class="relative w-20 h-20 mb-4">
-            <div class="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-emerald-600 rounded-full border-t-transparent animate-spin"></div>
-            <i class="fa-solid fa-golf-ball-tee absolute inset-0 m-auto flex items-center justify-center text-emerald-600 text-xl"></i>
+    <div id="magic-overlay" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center text-white overflow-hidden">
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="hud-circle mb-8">
+                <div class="hud-ring"></div>
+                <i class="fa-solid fa-golf-ball-tee text-5xl text-yellow-400 animate-pulse"></i>
+            </div>
+
+            <div class="text-center space-y-2">
+                <p class="text-green-200 text-xs font-mono-tech tracking-[0.2em] uppercase">System Processing</p>
+                <h2 id="magic-name" class="text-3xl md:text-5xl font-bold text-white decipher-text min-h-[60px]">INITIALIZING...</h2>
+                <p id="magic-status" class="text-green-200 text-sm font-mono-tech">Fetching Data...</p>
+            </div>
+
+            <div class="w-80 h-1 bg-green-900 mt-8 rounded-full overflow-hidden relative border border-green-700">
+                <div id="magic-progress" class="h-full bg-yellow-400 w-0 shadow-[0_0_10px_rgba(251,191,36,0.8)]"></div>
+            </div>
         </div>
-        <h2 class="text-xl font-bold text-emerald-800 tracking-wider animate-pulse">LOADING DATA...</h2>
-        <p class="text-sm text-gray-500 mt-2 font-mono" id="loading-status">Connecting to Google Sheets...</p>
     </div>
 
-    <header class="bg-[#064e3b] text-white shadow-xl relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+    <div id="confirm-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden modal-enter border border-gray-100">
+            <div class="bg-slate-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-shuffle text-green-700"></i> Xác nhận chia nhóm
+                </h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-6">
+                <p class="text-slate-600 text-sm leading-relaxed mb-2">
+                    Hệ thống sẽ tải dữ liệu mới nhất từ <b>Google Sheet</b> và thực hiện chia nhóm.
+                </p>
+                <ul class="text-xs text-slate-500 space-y-1 list-disc pl-5 bg-gray-50 p-3 rounded">
+                    <li>Ưu tiên Tee-time theo cột Priority.</li>
+                    <li>Người chơi <b>IsRandom = N</b> sẽ được xếp theo HDC.</li>
+                    <li>Người chơi cùng <b>Group</b> sẽ xếp cùng nhau.</li>
+                </ul>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-100">
+                <button onclick="closeModal()" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-600 hover:bg-gray-200 transition border border-gray-300">Hủy</button>
+                <button onclick="confirmReshuffle()" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-green-700 hover:bg-green-800 shadow-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-play"></i> Bắt đầu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header class="bg-golf text-white relative shadow-2xl overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="container mx-auto px-4 py-6 relative z-10">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex items-center gap-4">
-                    <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white/20">
-                        <i class="fa-solid fa-trophy text-white text-xl"></i>
+                    <div class="bg-white/10 p-3 rounded-full backdrop-blur-sm border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                        <i class="fa-solid fa-trophy text-3xl text-yellow-400"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">WOB TOURNAMENT</h1>
-                        <p class="text-emerald-300 text-sm font-medium font-mono-tech tracking-wider uppercase">Pairing System 2.5</p>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-lg uppercase">WOB YEAR-END OUTING 2025</h1>
+                        <p class="text-gray-300 text-sm font-medium mt-1 font-mono-tech tracking-wide"><i class="fa-solid fa-location-dot mr-2 text-yellow-400"></i>Sân Đông - Thủ Đức | 28/11/2025</p>
                     </div>
                 </div>
 
-                <div class="flex gap-3">
-                    <button onclick="fetchGoogleSheet()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-lg shadow-lg transition flex items-center gap-2 font-semibold text-sm border border-emerald-500/50">
-                        <i class="fa-solid fa-arrows-rotate"></i> Reload Data
-                    </button>
-                    <button onclick="copyToClipboard()" class="bg-white text-emerald-800 hover:bg-gray-100 px-5 py-2.5 rounded-lg shadow-lg transition flex items-center gap-2 font-semibold text-sm">
-                        <i class="fa-regular fa-copy"></i> Copy Text
-                    </button>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 text-sm min-w-[200px] shadow-lg text-center">
+                    <div class="text-gray-300 text-xs uppercase tracking-wider mb-1">Tổng người chơi</div>
+                    <div class="font-mono-tech text-3xl font-bold text-yellow-400" id="total-players-display">--</div>
                 </div>
             </div>
-            
-            <div class="mt-6 flex flex-wrap gap-4 text-xs md:text-sm border-t border-emerald-800/50 pt-4">
-                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-clock text-yellow-400"></i>
-                    <span class="text-emerald-100">Tee Time: <b class="text-white font-mono-tech">06:37</b></span>
-                 </div>
-                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-users text-yellow-400"></i>
-                    <span class="text-emerald-100">Total Players: <b class="text-white font-mono-tech" id="total-count">0</b></span>
-                 </div>
-                 <div class="flex-grow"></div>
-                 <div class="text-emerald-300 italic text-[10px]">Data Source: Google Sheets (HDC)</div>
+
+            <div class="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-4">
+                <button onclick="copyToClipboard()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow transition flex items-center gap-2 text-sm">
+                    <i class="fa-regular fa-copy"></i> Copy Excel
+                </button>
+                <div class="flex-grow"></div>
+                <button onclick="openModal()" class="bg-white text-red-600 hover:bg-red-50 font-bold py-2 px-5 rounded-lg shadow transition flex items-center gap-2 text-sm border border-red-100">
+                    <i class="fa-solid fa-arrows-rotate"></i> Tải & Chia Lại
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8">
+    <main class="flex-grow container mx-auto px-4 py-8 -mt-4 relative z-20">
+        <div class="flex items-center gap-2 mb-4">
+             <i class="fa-solid fa-list-ol text-green-700 text-xl"></i>
+             <h2 class="text-xl font-bold text-gray-800">Danh sách Flight</h2>
+        </div>
         <div id="fly-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             </div>
     </main>
+
+    <footer class="bg-slate-900 text-slate-500 py-6 text-center text-xs border-t border-slate-800">
+        <p class="font-mono-tech">POWERED BY WOB GOLF TECH v2.5</p>
+    </footer>
 
     <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl z-50 transition-all duration-300 opacity-0 translate-y-10 flex items-center gap-3">
         <i class="fa-solid fa-circle-check text-green-400"></i>
@@ -170,147 +270,253 @@
     </div>
 
     <script>
+        // --- CONFIGURATION ---
         const CONFIG = {
-            // Link Gốc: https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pubhtml
-            // Chuyển đổi sang CSV endpoint để fetch dữ liệu
-            sheetId: "2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3",
+            startDate: "28/11/2025",
             startTime: "06:37", 
-            interval: 7, // phút
+            interval: 7,        
+            storageKey: "WOB_OUTING_FINAL_SHEET_V1", 
+            // Link Google Sheet CSV (Publish to Web -> CSV)
+            sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv"
         };
 
         let currentFlights = [];
         let rawPlayers = [];
 
-        // --- 1. DATA FETCHING ---
-        function fetchGoogleSheet() {
-            const loading = document.getElementById('loading-overlay');
-            const status = document.getElementById('loading-status');
-            loading.classList.remove('hidden');
-            status.innerText = "Downloading CSV from Google...";
-
-            // Construct CSV URL
-            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${CONFIG.sheetId}/pub?output=csv`;
-
-            Papa.parse(csvUrl, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    if (results.data && results.data.length > 0) {
-                        status.innerText = "Processing Logic...";
-                        rawPlayers = results.data.map(row => ({
-                            name: row['PlayerName'] || "Unknown",
-                            vga: row['VGA'] || "0000",
-                            hdc: parseFloat(row['Handicap']) || 0,
-                            group: (row['Group'] || "A").trim().toUpperCase(),
-                            isRandom: (row['IsRandom'] || "Y").trim().toUpperCase(),
-                            priority: parseInt(row['PriorityFlyTime']) || 99, // Mặc định độ ưu tiên thấp nếu không có
-                        }));
-                        
-                        document.getElementById('total-count').innerText = rawPlayers.length;
-                        processPairingLogic();
-                    } else {
-                        alert("Không tìm thấy dữ liệu hoặc lỗi file CSV!");
-                        loading.classList.add('hidden');
-                    }
-                },
-                error: function(err) {
-                    console.error("Error:", err);
-                    alert("Lỗi kết nối Google Sheet: " + err.message);
-                    loading.classList.add('hidden');
-                }
-            });
+        // --- INIT ---
+        function init() {
+            const savedData = localStorage.getItem(CONFIG.storageKey);
+            if (savedData) {
+                currentFlights = JSON.parse(savedData);
+                updateStats(currentFlights);
+                renderFlights();
+            } else {
+                openModal();
+            }
         }
 
-        // --- 2. PAIRING LOGIC (CORE) ---
-        function processPairingLogic() {
-            // Lấy danh sách các Group duy nhất (A, B, C...)
-            const uniqueGroups = [...new Set(rawPlayers.map(p => p.group))].sort();
-            
-            let allFlights = [];
-
-            uniqueGroups.forEach(groupName => {
-                // Lọc người chơi trong Group này
-                const groupPlayers = rawPlayers.filter(p => p.group === groupName);
-
-                // Tách thành 2 tập: Cố định (Non-Random) và Ngẫu nhiên (Random)
-                const fixedPlayers = groupPlayers.filter(p => p.isRandom === 'N');
-                const randomPlayers = groupPlayers.filter(p => p.isRandom !== 'N');
-
-                // Xử lý nhóm CỐ ĐỊNH: Sort theo HDC -> Chia nhóm 4
-                // Giả định: Sort HDC từ thấp đến cao
-                fixedPlayers.sort((a, b) => a.hdc - b.hdc);
-                const fixedFlights = chunkArray(fixedPlayers, 4);
-
-                // Xử lý nhóm NGẪU NHIÊN: Shuffle -> Chia nhóm 4
-                // Dùng Seed random để mỗi lần F5 vẫn ra kết quả khác nhau (hoặc cố định nếu muốn)
-                // Ở đây ta dùng Math.random() thực tế mỗi lần bấm nút
-                const shuffledRandoms = shuffle(randomPlayers);
-                const randomFlights = chunkArray(shuffledRandoms, 4);
-
-                // Gộp vào danh sách flight chung
-                // Lưu ý: Flight được tạo ra ở đây chưa có giờ TeeTime chuẩn, chỉ là gom nhóm
-                [...fixedFlights, ...randomFlights].forEach(members => {
-                    allFlights.push({
-                        groupName: groupName,
-                        players: members
-                    });
+        // --- FETCH DATA ---
+        async function fetchAndParseData() {
+            return new Promise((resolve, reject) => {
+                Papa.parse(CONFIG.sheetCsvUrl, {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        console.log("Raw Data:", results.data);
+                        // Clean keys and map to internal structure
+                        const cleaned = results.data
+                            .filter(row => row.PlayerName && row.PlayerName.trim() !== "") // Filter empty rows
+                            .map(row => ({
+                                name: row['PlayerName'] || row['PlayerName'] || "Unknown",
+                                vga: row['VGA'] || "N/A",
+                                hdc: parseInt(row['Handicap']) || 0,
+                                group: row['Group'] ? row['Group'].trim() : "A",
+                                isRandom: row['IsRandom'] ? row['IsRandom'].trim().toUpperCase() : "Y",
+                                priority: parseInt(row['PriorityFlyTime']) || 0 // 0 means no priority
+                            }));
+                        resolve(cleaned);
+                    },
+                    error: function(err) {
+                        reject(err);
+                    }
                 });
             });
-
-            // --- QUY TẮC PriorityFlyTime ---
-            // Sắp xếp các Flight dựa trên độ ưu tiên.
-            // Logic: Flight nào chứa thành viên có Priority nhỏ nhất (1 là cao nhất) sẽ được đẩy lên đầu.
-            allFlights.sort((flyA, flyB) => {
-                const getMinPriority = (flight) => {
-                    // Tìm số priority nhỏ nhất trong nhóm 4 người (số càng nhỏ càng ưu tiên)
-                    // Nếu không có priority hợp lệ (<=0 hoặc >8), coi như là 99
-                    const priorities = flight.players.map(p => (p.priority >= 1 && p.priority <= 8) ? p.priority : 99);
-                    return Math.min(...priorities);
-                };
-
-                return getMinPriority(flyA) - getMinPriority(flyB);
-            });
-
-            // Gán số thứ tự và giờ TeeTime sau khi đã sắp xếp
-            currentFlights = allFlights.map((fly, index) => {
-                return {
-                    flyNo: index + 1,
-                    teeTime: calculateTeeTime(CONFIG.startTime, index, CONFIG.interval),
-                    groupName: fly.groupName, // Group đại diện (thường là giống nhau cả nhóm)
-                    players: fly.players.map(p => ({
-                        ...p,
-                        avatarUrl: generateSafeAvatar(p.name)
-                    }))
-                };
-            });
-
-            // Render ra màn hình
-            setTimeout(() => {
-                renderFlights();
-                document.getElementById('loading-overlay').classList.add('hidden');
-                showToast("Dữ liệu đã được cập nhật thành công!");
-            }, 800); // Fake delay for UX
         }
 
-        // --- 3. UTILS & HELPERS ---
+        // --- AVATAR GENERATOR (DiceBear v9 Safe) ---
+        function generateSafeAvatar(name) {
+            // DiceBear v9 styles: "shortFlat", "theCaesar", "theCaesarSidePart", "shortRound", "shortWaved"
+            // We use a deterministic seed based on name to keep avatar consistent
+            const styles = ["shortFlat", "theCaesar", "theCaesarSidePart", "shortRound", "shortWaved"];
+            const randomStyle = styles[Math.floor(Math.random() * styles.length)]; // Just pick one for simplicity or hash name
+            
+            // Build URL manually to ensure safety
+            return `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(name)}&top=${randomStyle}&eyebrows=default&mouth=smile&clothing=collarAndSweater&clothingColor=3c4f5c,65c9ff,262e33`;
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+        }
+
+        // --- MODAL LOGIC ---
+        function openModal() { document.getElementById('confirm-modal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('confirm-modal').classList.add('hidden'); }
         
-        function chunkArray(array, size) {
-            const results = [];
-            for (let i = 0; i < array.length; i += size) {
-                results.push(array.slice(i, i + size));
-            }
-            return results;
+        function confirmReshuffle() {
+            closeModal();
+            startMagicSequence();
         }
 
+        // --- MAGIC ANIMATION ---
+        async function startMagicSequence() {
+            const overlay = document.getElementById('magic-overlay');
+            const magicName = document.getElementById('magic-name');
+            const magicStatus = document.getElementById('magic-status');
+            const progressBar = document.getElementById('magic-progress');
+            
+            overlay.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            
+            try {
+                magicStatus.innerText = "Connecting to Satellite...";
+                progressBar.style.width = '20%';
+                
+                // 1. Fetch Data
+                rawPlayers = await fetchAndParseData();
+                progressBar.style.width = '50%';
+                magicStatus.innerText = `Data Loaded: ${rawPlayers.length} Players`;
+
+                // 2. Animation Loop
+                let step = 0;
+                const interval = setInterval(() => {
+                    const r = rawPlayers[Math.floor(Math.random() * rawPlayers.length)];
+                    magicName.innerText = r.name.toUpperCase();
+                    step++;
+                    if(step > 20) magicStatus.innerText = "Optimizing Group Algorithms...";
+                }, 80);
+
+                setTimeout(() => {
+                    progressBar.style.width = '100%';
+                }, 1000);
+
+                // 3. Process Logic
+                setTimeout(() => {
+                    clearInterval(interval);
+                    generateFlightsLogic();
+                    magicName.innerText = "SUCCESS";
+                    setTimeout(() => overlay.classList.add('hidden'), 500);
+                }, 3000);
+
+            } catch (error) {
+                alert("Lỗi tải dữ liệu Google Sheet: " + error);
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // --- CORE LOGIC (THE BRAIN) ---
+        function generateFlightsLogic() {
+            // 1. Group Players by "Group" column (A, B, C...)
+            const groups = {};
+            rawPlayers.forEach(p => {
+                if (!groups[p.group]) groups[p.group] = [];
+                groups[p.group].push(p);
+            });
+
+            let unassignedFlights = [];
+
+            // 2. Process each Group
+            Object.keys(groups).forEach(groupName => {
+                let players = groups[groupName];
+                
+                // Separate Fixed (IsRandom=N) and Random
+                let fixedPlayers = players.filter(p => p.isRandom === 'N');
+                let randomPlayers = players.filter(p => p.isRandom !== 'N');
+
+                // Sort Fixed by HDC (Low to High)
+                fixedPlayers.sort((a, b) => a.hdc - b.hdc);
+                
+                // Shuffle Random
+                randomPlayers = shuffle(randomPlayers);
+
+                // Create chunks of 4
+                // Note: Logic assumes multiples of 4 or handles leftovers. 
+                // We process Fixed first, then Random.
+                
+                // Helper to chunk
+                const chunkAndCreate = (list) => {
+                    while(list.length > 0) {
+                        const chunk = list.splice(0, 4);
+                        // Determine Priority for this chunk (flight)
+                        // If anyone has priority 1-8, take the MIN (highest priority) value
+                        let flightPriority = 0;
+                        const priorities = chunk.map(p => p.priority).filter(p => p > 0);
+                        if (priorities.length > 0) {
+                            flightPriority = Math.min(...priorities);
+                        }
+
+                        unassignedFlights.push({
+                            players: chunk,
+                            groupName: groupName,
+                            priority: flightPriority,
+                            totalHDC: chunk.reduce((sum, p) => sum + p.hdc, 0)
+                        });
+                    }
+                };
+
+                chunkAndCreate(fixedPlayers);
+                chunkAndCreate(randomPlayers);
+            });
+
+            // 3. Assign Tee Times based on Priority
+            // We have unassignedFlights. We need to map them to Slots 1, 2, 3...
+            // Logic:
+            // - Priority 1 -> Slot 1
+            // - Priority 8 -> Slot 8 (or Last)
+            // - Priority 0 -> Fill remaining empty slots randomly
+            
+            const totalFlights = unassignedFlights.length;
+            let finalFlightList = new Array(totalFlights).fill(null);
+
+            // Place specific priorities first
+            let remainingFlights = [];
+            
+            unassignedFlights.forEach(f => {
+                if (f.priority > 0 && f.priority <= totalFlights) {
+                    // Try to place at exact index (priority - 1)
+                    let index = f.priority - 1;
+                    if (finalFlightList[index] === null) {
+                        finalFlightList[index] = f;
+                    } else {
+                        // Conflict: Slot taken. Push to remaining (or handle logic)
+                        // For simplicity, treat as no priority if conflict
+                        remainingFlights.push(f); 
+                    }
+                } else {
+                    remainingFlights.push(f);
+                }
+            });
+
+            // Shuffle remaining flights to ensure randomness for non-priority
+            remainingFlights = shuffle(remainingFlights);
+
+            // Fill gaps
+            for (let i = 0; i < totalFlights; i++) {
+                if (finalFlightList[i] === null) {
+                    if (remainingFlights.length > 0) {
+                        finalFlightList[i] = remainingFlights.shift();
+                    }
+                }
+            }
+
+            // Clean up: If any flights were left (due to index out of bounds), append them
+            while(remainingFlights.length > 0) {
+                finalFlightList.push(remainingFlights.shift());
+            }
+            
+            // Remove nulls (just in case)
+            finalFlightList = finalFlightList.filter(f => f !== null);
+
+            // 4. Finalize Object Structure
+            currentFlights = finalFlightList.map((f, index) => ({
+                flyNo: index + 1,
+                teeTime: calculateTeeTime(CONFIG.startTime, index, CONFIG.interval),
+                players: f.players,
+                groupName: f.groupName,
+                totalHDC: f.totalHDC
+            }));
+
+            // Save and Render
+            localStorage.setItem(CONFIG.storageKey, JSON.stringify(currentFlights));
+            updateStats(currentFlights);
+            renderFlights();
+        }
+
+        // --- UTILS ---
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
-            // While there remain elements to shuffle.
             while (currentIndex != 0) {
-                // Pick a remaining element.
                 randomIndex = Math.floor(Math.random() * currentIndex);
                 currentIndex--;
-                // And swap it with the current element.
                 [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
             }
             return array;
@@ -324,90 +530,71 @@
             return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
         }
 
-        // Fix DiceBear v9 API
-        function generateSafeAvatar(name) {
-            // Style nam tính, tóc ngắn
-            const maleHairStyles = ["shortCurly","shortDreads1","shortDreads2","shortFlat","shortRound","shortWaved","sides","theCaesar","theCaesarSidePart"];
-            // Chọn tóc dựa trên tên để cố định (không random mỗi lần render lại UI)
-            const seed = name.replace(/\s/g, ''); 
-            const hairIndex = seed.length % maleHairStyles.length;
-            const hair = maleHairStyles[hairIndex];
-            
-            // API V9 Construction
-            return `https://api.dicebear.com/9.x/avataaars/svg?seed=${seed}&top[]=${hair}&facialHairProbability=20&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+        function updateStats(flights) {
+            let total = 0;
+            flights.forEach(f => total += f.players.length);
+            document.getElementById('total-players-display').innerText = total;
         }
 
-        function getInitial(name) {
-            const parts = name.split(' ');
-            if (parts.length >= 2) {
-                return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-            }
-            return name.substring(0, 2).toUpperCase();
-        }
-
-        // --- 4. RENDER UI ---
+        // --- RENDER ---
         function renderFlights() {
             const grid = document.getElementById('fly-grid');
             grid.innerHTML = '';
 
             currentFlights.forEach(fly => {
-                // Build Player Rows
-                let playersHtml = fly.players.map(p => `
-                    <div class="player-row flex items-center gap-3 py-3 px-4 hover:bg-slate-50 transition">
-                        <div class="relative flex-shrink-0">
-                            <img src="${p.avatarUrl}" class="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 object-cover shadow-sm" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${p.name}&background=random'">
-                            <div class="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px]">
-                                <div class="bg-emerald-500 w-2.5 h-2.5 rounded-full"></div>
-                            </div>
+                let playersHtml = fly.players.map(p => {
+                    const avatarUrl = generateSafeAvatar(p.name);
+                    const initials = getInitials(p.name);
+                    
+                    return `
+                    <div class="player-row group">
+                        <div class="player-avatar-wrapper">
+                            <img src="${avatarUrl}" class="w-full h-full object-cover" 
+                                 onerror="this.parentNode.innerHTML='${initials}'" alt="${p.name}">
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm text-slate-800 truncate" title="${p.name}">${p.name}</div>
-                            <span class="badge-vga">VGA: ${p.vga}</span>
+                            <div class="font-bold text-sm text-gray-800 truncate font-mono-tech uppercase" title="${p.name}">${p.name}</div>
+                            <div class="text-[10px] text-gray-400 font-bold bg-gray-100 inline-block px-1 rounded mt-1">VGA: ${p.vga}</div>
                         </div>
-                        <div class="text-right">
-                            <div class="badge-hdc shadow-sm">${p.hdc}</div>
+                        <div class="ml-2">
+                             <div class="badge-hdc-square">${p.hdc}</div>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
 
-                // Fill Empty Slots if < 4 players
-                if (fly.players.length < 4) {
+                // Fill empty slots if < 4 players
+                if(fly.players.length < 4) {
                     for(let i=0; i < (4 - fly.players.length); i++) {
                          playersHtml += `
-                            <div class="player-row flex items-center gap-3 py-3 px-4 opacity-40">
-                                <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-dashed border-gray-300 flex items-center justify-center">
-                                    <i class="fa-solid fa-user text-gray-400"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="h-4 bg-gray-200 rounded w-2/3"></div>
-                                </div>
+                         <div class="player-row opacity-30">
+                            <div class="player-avatar-wrapper bg-gray-200 border-gray-300">
+                                <i class="fa-solid fa-user text-gray-400"></i>
                             </div>
-                         `;
+                            <div class="flex-1 text-sm text-gray-400 italic">Empty Slot</div>
+                         </div>`;
                     }
                 }
 
-                // Create Card Element
                 const card = document.createElement('div');
                 card.className = "flight-card";
                 card.innerHTML = `
-                    <div class="card-header flex justify-between items-center">
+                    <div class="flight-header">
                         <div class="flex items-center gap-3">
                             <div class="flight-number-box">
                                 ${fly.flyNo}
                             </div>
                             <div>
-                                <div class="text-[10px] text-emerald-200 font-bold tracking-widest uppercase mb-0.5">FLIGHT</div>
-                                <div class="font-mono-tech text-xl font-bold flex items-center gap-1">
-                                    <i class="fa-regular fa-clock text-xs text-emerald-300"></i> ${fly.teeTime}
+                                <div class="text-[10px] text-green-200 uppercase tracking-widest font-bold mb-0.5">FLIGHT</div>
+                                <div class="text-xl font-bold font-mono-tech flex items-center gap-2">
+                                    <i class="fa-regular fa-clock text-xs"></i> ${fly.teeTime}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col items-end">
-                            <span class="text-xs text-emerald-300 font-bold uppercase tracking-wider">Group</span>
-                            <span class="text-xl font-bold font-mono-tech text-white">${fly.groupName}</span>
+                        <div class="group-badge">
+                            GROUP ${fly.groupName}
                         </div>
                     </div>
-                    <div class="bg-white flex-grow flex flex-col justify-center">
+                    <div class="flex-grow bg-white">
                         ${playersHtml}
                     </div>
                 `;
@@ -415,38 +602,28 @@
             });
         }
 
-        // --- 5. EXPORT ---
         function copyToClipboard() {
-            if (currentFlights.length === 0) {
-                showToast("Chưa có dữ liệu để copy!");
-                return;
-            }
-            let content = "FlyNo\tTeeTime\tGroup\tPlayerName\tVGA\tHandicap\n";
+            let content = "FlyNo\tTeeTime\tGroup\tPlayerName\tVGA\tHandicap\tFlightHDC\n";
             currentFlights.forEach(fly => {
                 fly.players.forEach(p => {
-                    content += `${fly.flyNo}\t${fly.teeTime}\t${fly.groupName}\t${p.name}\t${p.vga}\t${p.hdc}\n`;
+                    content += `${fly.flyNo}\t${fly.teeTime}\t${fly.groupName}\t${p.name}\t${p.vga}\t${p.hdc}\t${fly.totalHDC}\n`;
                 });
             });
             navigator.clipboard.writeText(content).then(() => {
-                showToast("Đã copy dữ liệu vào Clipboard!");
-            }).catch(err => {
-                alert("Lỗi copy: " + err);
+                showToast("Đã copy dữ liệu! Hãy Paste vào Excel/Sheet.");
             });
         }
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-msg');
-            toastMsg.innerText = msg;
+            document.getElementById('toast-msg').innerText = msg;
             toast.classList.remove('opacity-0', 'translate-y-10');
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-10');
             }, 3000);
         }
 
-        // Auto Load on Start
-        window.addEventListener('DOMContentLoaded', fetchGoogleSheet);
-
+        init();
     </script>
 </body>
 </html>
