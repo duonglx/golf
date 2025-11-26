@@ -16,12 +16,12 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f3f4f6; color: #1f2937; }
         
-        /* Tùy chỉnh thanh cuộn */
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 3px; }
 
-        /* Nền Golf Pattern */
+        /* Background */
         .bg-golf-pattern {
             background-color: #f0fdf4;
             background-image: 
@@ -35,7 +35,7 @@
             background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
         }
 
-        /* Card Style */
+        /* Card */
         .flight-card {
             background: white;
             border-radius: 12px;
@@ -46,9 +46,9 @@
             display: flex;
             flex-direction: column;
         }
-        .flight-card:active { transform: scale(0.98); } /* Hiệu ứng nhấn trên mobile */
+        .flight-card:active { transform: scale(0.98); }
 
-        /* Header Gradient */
+        /* Header */
         .header-bg {
             background: linear-gradient(rgba(6, 78, 59, 0.92), rgba(6, 78, 59, 0.96)), 
                         url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2070&auto=format&fit=crop');
@@ -58,7 +58,7 @@
         
         .card-header-bg { background: #065f46; position: relative; }
 
-        /* Loading Spinner */
+        /* Spinner */
         .spinner-ring {
             display: inline-block; width: 50px; height: 50px;
         }
@@ -103,7 +103,6 @@
             <div class="flex flex-col gap-4">
                 
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    
                     <div class="flex items-center gap-3 w-full md:w-auto">
                         <div class="w-10 h-10 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg flex-shrink-0">
                             <i class="fa-solid fa-trophy text-yellow-400 text-lg md:text-2xl"></i>
@@ -142,7 +141,7 @@
                     </div>
                     <input type="text" id="searchInput" onkeyup="filterFlights()"
                         class="block w-full pl-10 pr-12 py-2.5 bg-white/95 backdrop-blur text-gray-900 rounded-lg border-0 focus:ring-2 focus:ring-green-400 placeholder:text-gray-500 text-base font-medium shadow-lg transition-all" 
-                        placeholder="Tìm tên Golfer hoặc VGA...">
+                        placeholder="Nhập tên, tên không dấu hoặc VGA...">
                     <div id="search-count" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded hidden">
                         0
                     </div>
@@ -153,7 +152,6 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-6 relative z-0">
-        
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
             <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
                 <i class="fa-solid fa-list-ol text-green-600"></i> Danh sách Flight
@@ -168,7 +166,7 @@
 
         <div id="no-result" class="hidden flex flex-col items-center justify-center py-12 text-center">
             <i class="fa-solid fa-user-slash text-gray-300 text-3xl mb-2"></i>
-            <p class="text-gray-500 text-sm font-medium">Không tìm thấy kết quả.</p>
+            <p class="text-gray-500 text-sm font-medium">Không tìm thấy kết quả phù hợp.</p>
         </div>
     </main>
 
@@ -183,16 +181,15 @@
     </footer>
 
     <script>
-        // --- CONFIGURATION ---
         const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv";
 
         const BACKUP_DATA = [
-            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player", VGA: "12345", Handicap: 20, AvatarURL: "" }
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng", VGA: "47824", Handicap: 21, AvatarURL: "" },
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20, AvatarURL: "" }
         ];
 
         let allFlightsData = [];
 
-        // --- INIT ---
         window.addEventListener('DOMContentLoaded', () => {
             const loadingBar = document.getElementById('loading-bar');
             setTimeout(() => { loadingBar.style.width = '50%'; }, 100);
@@ -230,7 +227,27 @@
             });
         }
 
-        // Fix Avatar v9 DiceBear
+        // --- HÀM CHUẨN HÓA TIẾNG VIỆT (Smart Search Logic) ---
+        function removeVietnameseTones(str) {
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+            str = str.replace(/đ/g,"d");
+            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+            str = str.replace(/Đ/g, "D");
+            // Một số hệ thống mã hóa tiếng Việt khác (NFD)
+            str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // ̀ ́ ̃ ̉ ̣  huyền, sắc, ngã, hỏi, nặng
+        }
+
         function generateSafeAvatar(name, originalSeed) {
             const validStyles = ["shortFlat", "shortRound", "shortWaved", "sides", "theCaesar", "theCaesarSidePart", "dreads", "curly", "shavedSides"];
             const styleParams = validStyles.map(s => `top[]=${s}`).join('&');
@@ -259,6 +276,8 @@
 
                 grouped[flyNo].players.push({
                     name: item.PlayerName,
+                    // Lưu thêm trường normalizedName để tìm kiếm nhanh hơn
+                    normalizedName: removeVietnameseTones(item.PlayerName).toLowerCase(),
                     vga: item.VGA || "---",
                     hdc: item.Handicap || 0,
                     avatar: safeAvatar 
@@ -327,12 +346,17 @@
             });
         }
 
+        // --- SEARCH FUNCTION (UPDATED) ---
         function filterFlights() {
             const input = document.getElementById('searchInput');
-            const term = input.value.toLowerCase().trim();
+            // 1. Lấy từ khóa
+            const rawTerm = input.value.trim();
+            // 2. Chuẩn hóa từ khóa tìm kiếm (bỏ dấu, lower)
+            const term = removeVietnameseTones(rawTerm).toLowerCase();
+            
             const countBadge = document.getElementById('search-count');
 
-            if (term === "") {
+            if (rawTerm === "") {
                 countBadge.classList.add('hidden');
                 renderFlights(allFlightsData);
                 return;
@@ -340,7 +364,9 @@
 
             const filtered = allFlightsData.filter(fly => {
                 return fly.players.some(p => 
-                    p.name.toLowerCase().includes(term) || 
+                    // So sánh tên đã chuẩn hóa với từ khóa đã chuẩn hóa
+                    p.normalizedName.includes(term) || 
+                    // Hoặc so sánh VGA
                     String(p.vga).toLowerCase().includes(term)
                 );
             });
