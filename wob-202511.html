@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOB Outing 2025 - Official Pairings</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #f0fdf4; }
+        .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+        /* Nền cỏ golf cách điệu */
+        .bg-golf {
+            background-color: #064e3b;
+            background-image: radial-gradient(#065f46 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Card Styles */
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.15); transition: all 0.3s ease; }
+        .badge-hdc { background-color: #dcfce7; color: #166534; border: 1px solid #86efac; }
+
+        /* Hiệu ứng Loading Overlay */
+        #loading-overlay {
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(52, 211, 153, 0.3);
+            border-radius: 50%;
+            border-top-color: #34d399;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .decipher-text {
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 10px rgba(52, 211, 153, 0.8);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800 bg-gray-50">
+
+    <div id="loading-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center text-white transition-opacity duration-700">
+        <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(#34d399 1px, transparent 1px), linear-gradient(90deg, #34d399 1px, transparent 1px); background-size: 40px 40px;"></div>
+        
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="mb-6 relative">
+                <div class="absolute inset-0 bg-green-500 blur-xl opacity-20 rounded-full"></div>
+                <div class="spinner"></div>
+                <i class="fa-solid fa-golf-ball-tee text-xl text-green-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
+            </div>
+
+            <div class="text-center space-y-2">
+                <p class="text-green-400 text-xs font-mono-tech tracking-[0.2em] uppercase">System Sync</p>
+                <h2 id="loading-text" class="text-2xl md:text-4xl font-bold text-white decipher-text">CONNECTING...</h2>
+                <p id="loading-sub" class="text-gray-400 text-sm font-mono-tech">Fetching live data from server...</p>
+            </div>
+
+            <div class="w-64 h-1 bg-gray-800 mt-8 rounded-full overflow-hidden relative border border-gray-700">
+                <div id="loading-bar" class="h-full bg-gradient-to-r from-green-400 to-emerald-600 w-0 shadow-[0_0_10px_rgba(52,211,153,0.8)]"></div>
+            </div>
+        </div>
+    </div>
+
+    <header class="bg-golf text-white relative shadow-2xl overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+        <div class="container mx-auto px-4 py-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/10 p-3 rounded-full backdrop-blur-sm border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                        <i class="fa-solid fa-golf-ball-tee text-3xl md:text-4xl text-yellow-400"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight text-yellow-400 drop-shadow-lg uppercase">OUTING CUỐI NĂM WOB</h1>
+                        <p class="text-white/90 text-sm md:text-base font-medium mt-1 font-mono-tech"><i class="fa-solid fa-calendar-day mr-2 text-green-400"></i>28/11/2025 | Sân Đông - Thủ Đức</p>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 px-5 border border-white/10 text-sm min-w-[200px] shadow-lg text-center md:text-right">
+                    <div class="text-gray-300 text-xs uppercase tracking-wider mb-1">Tổng Golfer</div>
+                    <div class="font-bold text-2xl text-green-400 leading-none">32</div>
+                    <div class="text-yellow-300 text-xs font-mono-tech mt-1">
+                        <i class="fa-solid fa-clock mr-1"></i>06:37 - 07:26
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-1 w-full bg-gradient-to-r from-yellow-400 via-green-500 to-blue-500"></div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 relative z-20">
+        <div id="backup-alert" class="hidden mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded shadow-sm">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-yellow-400"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        Đang hiển thị dữ liệu lưu trữ (Offline Mode). Vui lòng kiểm tra kết nối Google Sheet nếu cần cập nhật mới nhất.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="fly-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-500 py-6 text-center text-xs border-t border-slate-800 mt-auto">
+        <p class="font-mono-tech">WOB GOLF TOURNAMENT SYSTEM © 2025</p>
+    </footer>
+
+    <script>
+        // --- CẤU HÌNH ---
+        
+        // DÁN LINK CSV GOOGLE SHEET VÀO ĐÂY
+        // Cách lấy: File -> Share -> Publish to Web -> Chọn Sheet "Flights" -> Chọn CSV -> Publish -> Copy Link
+        const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv"; 
+
+        // DỮ LIỆU DỰ PHÒNG (Backup Data)
+        // Được sử dụng nếu link Google Sheet trống hoặc lỗi, đảm bảo web không bao giờ trắng trang.
+        const BACKUP_DATA = [
+            // { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng (bạn Nam)", VGA: "47824", Handicap: 21, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_18&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_22&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 1, TeeTime: "06:37", PlayerName: "Ngô Thanh Tân", VGA: "147157", Handicap: 28, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_6&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 1, TeeTime: "06:37", PlayerName: "Trần Quang Khánh", VGA: "53612", Handicap: 16, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_11&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            
+            // { FlyNo: 2, TeeTime: "06:44", PlayerName: "Trịnh Quốc Dân An", VGA: "56320", Handicap: 28, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_32&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 2, TeeTime: "06:44", PlayerName: "Lê Hồng Sơn", VGA: "68539", Handicap: 18, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_3&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 2, TeeTime: "06:44", PlayerName: "Hoàng Anh Tiến", VGA: "114019", Handicap: 17, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_29&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 2, TeeTime: "06:44", PlayerName: "Hàn Quốc Ân", VGA: "888646", Handicap: 24, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_10&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+
+            // { FlyNo: 3, TeeTime: "06:51", PlayerName: "Vũ Duy Kiên", VGA: "32965", Handicap: 27, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_9&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 3, TeeTime: "06:51", PlayerName: "Đặng Thế Cường", VGA: "19899", Handicap: 7, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_26&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 3, TeeTime: "06:51", PlayerName: "Nguyễn Hoài Thanh", VGA: "40593", Handicap: 26, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_21&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 3, TeeTime: "06:51", PlayerName: "Phan Công Tú", VGA: "83376", Handicap: 28, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_8&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+
+            // { FlyNo: 4, TeeTime: "06:58", PlayerName: "Bùi Hoàng Bi", VGA: "158758", Handicap: 21, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_30&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 4, TeeTime: "06:58", PlayerName: "Võ Tấn Khương", VGA: "150473", Handicap: 28, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_19&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 4, TeeTime: "06:58", PlayerName: "Nguyễn Văn Phương (b.Nam)", VGA: "94320", Handicap: 23, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_13&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 4, TeeTime: "06:58", PlayerName: "Phạm Hữu Nghĩa", VGA: "103058", Handicap: 39, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_7&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+
+            // { FlyNo: 5, TeeTime: "07:05", PlayerName: "Nguyễn Hoàng Việt", VGA: "53224", Handicap: 40, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_31&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 5, TeeTime: "07:05", PlayerName: "Bùi Thế Lam", VGA: "888468", Handicap: 24, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_14&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 5, TeeTime: "07:05", PlayerName: "Nguyễn Hà Tuấn", VGA: "90203", Handicap: 30, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_20&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 5, TeeTime: "07:05", PlayerName: "Trần Nguyễn Tấn Cường", VGA: "95171", Handicap: 27, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_17&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+
+            // { FlyNo: 6, TeeTime: "07:12", PlayerName: "Lê Thế Tào (bạn Ân)", VGA: "75033", Handicap: 27, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_16&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 6, TeeTime: "07:12", PlayerName: "Nguyễn Long Giao", VGA: "4722", Handicap: 20, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_27&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 6, TeeTime: "07:12", PlayerName: "Trần Thành Nam", VGA: "100659", Handicap: 22, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_4&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 6, TeeTime: "07:12", PlayerName: "Bùi Tiến Bảo", VGA: "888828", Handicap: 29, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_24&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+
+            // { FlyNo: 7, TeeTime: "07:19", PlayerName: "Nguyễn Quốc Khánh", VGA: "888789", Handicap: 21, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_12&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 7, TeeTime: "07:19", PlayerName: "Huỳnh Công Lĩnh", VGA: "888222", Handicap: 17, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_23&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 7, TeeTime: "07:19", PlayerName: "Trần Thanh Tú", VGA: "888588", Handicap: 22, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_28&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 7, TeeTime: "07:19", PlayerName: "Lê Xuân Dương", VGA: "50334", Handicap: 29, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_2&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+
+            // { FlyNo: 8, TeeTime: "07:26", PlayerName: "Lê Hoàng Hải", VGA: "888838", Handicap: 28, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_1&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 8, TeeTime: "07:26", PlayerName: "Trần Thanh Bảo (Dự bị)", VGA: "46389", Handicap: 36, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_5&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 8, TeeTime: "07:26", PlayerName: "Võ Thành Bảo", VGA: "888668", Handicap: 23, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_15&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" },
+            // { FlyNo: 8, TeeTime: "07:26", PlayerName: "Nguyễn Quang Huy", VGA: "888333", Handicap: 16, AvatarURL: "https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_25&top[]=shortCurly&top[]=shortDreads1&top[]=shortDreads2&top[]=shortFlat&top[]=shortRound&top[]=shortWaved&top[]=sides&top[]=theCaesar&top[]=theCaesarSidePart&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede" }
+        ];
+
+        // --- KHỞI CHẠY ---
+        window.onload = function() {
+            startLoadingSequence();
+        };
+
+        // --- LOGIC XỬ LÝ DỮ LIỆU ---
+        function startLoadingSequence() {
+            const overlay = document.getElementById('loading-overlay');
+            const loadingBar = document.getElementById('loading-bar');
+            const loadingText = document.getElementById('loading-text');
+
+            // 1. Chạy thanh loading
+            setTimeout(() => { loadingBar.style.width = '30%'; }, 100);
+
+            // 2. Tải dữ liệu
+            loadData((data) => {
+                loadingBar.style.width = '80%';
+                loadingText.innerText = "RENDERING...";
+                
+                // 3. Render
+                renderFlights(data);
+
+                // 4. Kết thúc
+                setTimeout(() => {
+                    loadingBar.style.width = '100%';
+                    overlay.style.opacity = '0';
+                    setTimeout(() => { overlay.classList.add('hidden'); }, 700);
+                }, 800);
+            });
+        }
+
+        function loadData(callback) {
+            // Ưu tiên tải từ Google Sheet
+            if(GOOGLE_SHEET_URL && GOOGLE_SHEET_URL.trim() !== "") {
+                Papa.parse(GOOGLE_SHEET_URL, {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        console.log("Đã tải từ Google Sheet");
+                        processData(results.data, callback);
+                    },
+                    error: function(err) {
+                        console.error("Lỗi Google Sheet, dùng backup:", err);
+                        document.getElementById('backup-alert').classList.remove('hidden');
+                        processData(BACKUP_DATA, callback);
+                    }
+                });
+            } else {
+                // Nếu chưa có link, dùng dữ liệu backup (hardcode)
+                console.log("Dùng dữ liệu nội bộ");
+                setTimeout(() => {
+                    processData(BACKUP_DATA, callback);
+                }, 1500); // Giả lập độ trễ mạng cho mượt
+            }
+        }
+
+        function processData(rawData, callback) {
+            // Gom nhóm dữ liệu theo FlyNo
+            const grouped = {};
+            
+            rawData.forEach(item => {
+                // Bỏ qua dòng trống hoặc tiêu đề lặp
+                if(!item.FlyNo || item.FlyNo === "FlyNo") return; 
+
+                const flyNo = item.FlyNo;
+                if(!grouped[flyNo]) {
+                    grouped[flyNo] = {
+                        flyNo: flyNo,
+                        teeTime: item.TeeTime,
+                        players: []
+                    };
+                }
+                grouped[flyNo].players.push(item);
+            });
+
+            // Chuyển thành array và sắp xếp
+            const sortedFlights = Object.values(grouped).sort((a,b) => parseInt(a.flyNo) - parseInt(b.flyNo));
+            
+            if(callback) callback(sortedFlights);
+        }
+
+        function renderFlights(flightData) {
+            const grid = document.getElementById('fly-grid');
+            grid.innerHTML = '';
+
+            flightData.forEach(fly => {
+                let playersHtml = fly.players.map(p => `
+                    <div class="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0 hover:bg-slate-50 transition px-2 rounded-lg -mx-2">
+                        <div class="relative">
+                            <img src="${p.AvatarURL}" class="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 object-cover" 
+                                 onerror="this.src='https://ui-avatars.com/api/?name=${p.PlayerName}&background=random'">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-sm text-gray-800 truncate font-mono-tech" title="${p.PlayerName}">${p.PlayerName}</div>
+                            <div class="text-[10px] text-gray-400 font-mono">VGA: ${p.VGA}</div>
+                        </div>
+                        <div class="text-right">
+                            <span class="badge-hdc px-2 py-0.5 rounded text-xs font-bold block w-[35px] text-center">${p.Handicap}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl card-shadow card-hover overflow-hidden flex flex-col h-full border border-gray-100";
+                
+                // ĐÃ BỎ: <div class="bg-gray-50 ... TEAM HDC: ...">
+                card.innerHTML = `
+                    <div class="bg-slate-50 px-4 py-3 border-b border-gray-100 flex justify-between items-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+                        <div class="flex items-center gap-2">
+                            <div class="bg-white text-green-700 w-8 h-8 flex items-center justify-center rounded-lg font-bold text-sm shadow-sm border border-green-100">
+                                ${fly.flyNo}
+                            </div>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest font-mono-tech">FLIGHT</span>
+                        </div>
+                        <div class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-md text-sm font-bold font-mono border border-yellow-200 shadow-sm">
+                            ${fly.teeTime}
+                        </div>
+                    </div>
+                    <div class="p-4 flex-grow">
+                        ${playersHtml}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
