@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WOB YEAR-END OUTING 2025 - Official Pairings</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Preconnect and preload resource hints to reduce round-trips -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style"
+        onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+        as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+            rel="stylesheet">
+    </noscript>
+
+    <!-- Preload large header background to improve perceived paint -->
+    <link rel="preload"
+        href="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2070&auto=format&fit=crop" as="image">
+
+    <!-- Defer PapaParse so it doesn't block HTML parsing; it's used after DOMContentLoaded -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #15803d;
+            border-radius: 3px;
+        }
+
+        /* Background */
+        .bg-golf-pattern {
+            background-color: #f0fdf4;
+            background-image:
+                linear-gradient(30deg, #dcfce7 12%, transparent 12.5%, transparent 87%, #dcfce7 87.5%, #dcfce7),
+                linear-gradient(150deg, #dcfce7 12%, transparent 12.5%, transparent 87%, #dcfce7 87.5%, #dcfce7),
+                linear-gradient(30deg, #dcfce7 12%, transparent 12.5%, transparent 87%, #dcfce7 87.5%, #dcfce7),
+                linear-gradient(150deg, #dcfce7 12%, transparent 12.5%, transparent 87%, #dcfce7 87.5%, #dcfce7),
+                linear-gradient(60deg, #dcfce777 25%, transparent 25.5%, transparent 75%, #dcfce777 75%, #dcfce777),
+                linear-gradient(60deg, #dcfce777 25%, transparent 25.5%, transparent 75%, #dcfce777 75%, #dcfce777);
+            background-size: 40px 70px;
+            background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+        }
+
+        /* --- CARD DESIGN START (NEW) --- */
+
+        /* Khung bao ngoài Card */
+        .flight-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f0fdf4;
+        }
+
+        /* Hiệu ứng khi di chuột vào Card */
+        .flight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #d1fae5;
+        }
+
+        /* Phần Header (Màu xanh đậm) */
+        .flight-header {
+            background: linear-gradient(to right, #064e3b, #065f46);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ô vuông chứa số Flight */
+        .flight-number-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fbbf24;
+            /* Màu vàng */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Badge hiển thị tên Group (A, B) */
+        .group-badge {
+            background-color: white;
+            color: #14532d;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 13px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Dòng chứa thông tin từng người chơi */
+        .player-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px dashed #cbd5e1;
+            transition: background-color 0.2s;
+        }
+
+        .player-row:hover {
+            background-color: #f8fafc;
+        }
+
+        .player-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Khung tròn chứa Avatar */
+        .player-avatar-wrapper {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #ecfdf5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-weight: bold;
+            color: #065f46;
+            overflow: hidden;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Ô vuông hiển thị Handicap (Xanh lá) */
+        .badge-hdc-square {
+            background-color: #15803d;
+            /* Green 700 */
+            color: white;
+            min-width: 32px;
+            height: 32px;
+            padding: 0 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- CARD DESIGN END --- */
+
+
+        /* Header Gradient */
+        .header-bg {
+            background: linear-gradient(rgba(6, 78, 59, 0.92), rgba(6, 78, 59, 0.96)),
+                url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+
+
+        /* Spinner */
+        .spinner-ring {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+        }
+
+        .spinner-ring:after {
+            content: " ";
+            display: block;
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: ring-spin 1.2s linear infinite;
+        }
+
+        @keyframes ring-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Badges */
+        .vga-badge {
+            font-size: 0.6rem;
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .hdc-badge {
+            background: #15803d;
+            color: white;
+            min-width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Gala Button Animation */
+        .gala-btn {
+            transition: all 0.3s ease;
+        }
+
+        .gala-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse-border {
+            0% {
+                border-color: rgba(250, 204, 21, 0.4);
+            }
+
+            50% {
+                border-color: rgba(250, 204, 21, 0.8);
+            }
+
+            100% {
+                border-color: rgba(250, 204, 21, 0.4);
+            }
+        }
+
+        .gala-highlight {
+            animation: pulse-border 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-golf-pattern min-h-screen flex flex-col overflow-x-hidden">
+
+    <div id="loading-overlay"
+        class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-900 text-white transition-opacity duration-700">
+        <div class="relative">
+            <div class="absolute inset-0 bg-green-500 blur-2xl opacity-20 rounded-full"></div>
+            <div class="spinner-ring relative z-10"></div>
+            <i
+                class="fa-solid fa-golf-ball-tee absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-green-400 text-sm"></i>
+        </div>
+        <h2 class="mt-4 text-xl font-bold tracking-wider">ĐANG TẢI DỮ LIỆU</h2>
+        <div class="w-48 h-1 bg-gray-800 mt-4 rounded-full overflow-hidden">
+            <div id="loading-bar" class="h-full bg-green-500 w-0 transition-all duration-1000 ease-out"></div>
+        </div>
+    </div>
+
+    <header class="header-bg text-white shadow-xl relative z-40 sticky top-0">
+        <div class="container mx-auto px-4 py-3 md:py-5">
+            <div class="flex flex-col gap-3 md:gap-5">
+
+                <div class="flex justify-between items-start gap-2">
+
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div
+                            class="w-10 h-10 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg flex-shrink-0">
+                            <i class="fa-solid fa-trophy text-yellow-400 text-lg md:text-2xl"></i>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <div
+                                class="text-[9px] md:text-xs font-bold text-green-300 tracking-wider uppercase truncate">
+                                Official Tournament</div>
+                            <h1
+                                class="text-lg md:text-2xl font-extrabold text-white leading-tight uppercase whitespace-nowrap">
+                                WOB Outing 2025</h1>
+                            <div
+                                class="flex items-center gap-2 text-[10px] md:text-sm text-gray-200 mt-0.5 font-medium">
+                                <span><i class="fa-regular fa-calendar mr-1"></i>28/11/2025</span>
+                                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                                <span><i class="fa-solid fa-location-dot mr-1"></i>Thủ Đức</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://maps.app.goo.gl/S6vZp2oQR5VaLrvL8" target="_blank"
+                        class="gala-btn gala-highlight flex-shrink-0 bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-400/30 backdrop-blur-sm rounded-xl px-3 py-2 cursor-pointer flex items-center gap-2 md:gap-3 text-right">
+
+                        <div class="flex flex-col items-end">
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] md:text-xs font-bold text-yellow-300 uppercase">TIỆC
+                                    12:30</span>
+                                <i class="fa-solid fa-map-location-dot text-yellow-300 text-xs"></i>
+                            </div>
+                            <div class="hidden md:block text-[10px] text-gray-200">Nhà hàng Seasan | Mr HảiLH</div>
+                        </div>
+
+                        <div
+                            class="bg-yellow-400 text-yellow-900 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-utensils text-sm"></i>
+                        </div>
+                    </a>
+                    <!-- Capture Button Removed from Header -->
+                </div>
+
+                <div class="relative w-full group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="filterFlights()"
+                        class="block w-full pl-10 pr-12 py-2.5 bg-white/95 backdrop-blur text-gray-900 rounded-lg border-0 focus:ring-2 focus:ring-green-400 placeholder:text-gray-500 text-base font-medium shadow-lg transition-all"
+                        placeholder="Nhập tên, tên không dấu hoặc VGA...">
+                    <div id="search-count"
+                        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded hidden">
+                        0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-1 w-full bg-gradient-to-r from-yellow-400 via-green-500 to-emerald-600"></div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-6 relative z-0">
+        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
+            <div class="flex items-center gap-4">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-green-600"></i> Danh sách Flight
+                </h2>
+                <!-- Capture Button Moved Here -->
+                <button onclick="captureScreen()"
+                    class="gala-btn bg-green-600 hover:bg-green-700 text-white border border-green-500 rounded-lg px-3 py-1.5 cursor-pointer flex items-center gap-2 shadow-sm transition-all"
+                    title="Chụp ảnh toàn trang">
+                    <i class="fa-solid fa-camera text-sm"></i>
+                    <span class="text-xs font-bold uppercase">Capture</span>
+                </button>
+            </div>
+
+            <div class="bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                <span class="text-xs font-bold text-gray-500">Tổng: <span id="total-players-count"
+                        class="text-green-700 text-sm">--</span></span>
+            </div>
+        </div>
+
+        <div id="fly-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-300 opacity-0">
+        </div>
+
+        <div id="no-result" class="hidden flex flex-col items-center justify-center py-12 text-center">
+            <i class="fa-solid fa-user-slash text-gray-300 text-3xl mb-2"></i>
+            <p class="text-gray-500 text-sm font-medium">Không tìm thấy kết quả phù hợp.</p>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-1">
+                <i class="fa-solid fa-golf-ball-tee text-green-600"></i>
+                <span class="font-bold text-gray-800 text-xs tracking-wide">WOB GOLF</span>
+            </div>
+            <p class="text-[10px] text-gray-400">Data synced via Google Sheets.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Using proxies to avoid CORS errors when running locally (origin 'null')
+        const RAW_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSl-c25LTQMr5-usqXvTRhhRXgpf7w9hzlX8JjXLVppuDcD8vIXg5TXAc31kWRe3aXBjRN4Ikpdukl3/pub?output=csv";
+
+        const BACKUP_DATA = [
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Bùi Đức Tùng", VGA: "47824", Handicap: 21, Group: "A", AvatarURL: "" },
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Phạm Xuân Cảnh", VGA: "52344", Handicap: 20, Group: "A", AvatarURL: "" },
+            { FlyNo: 1, TeeTime: "06:37", PlayerName: "Demo Player", VGA: "12345", Handicap: 20, Group: "A", AvatarURL: "" }
+        ];
+
+        let allFlightsData = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const loadingBar = document.getElementById('loading-bar');
+            setTimeout(() => { loadingBar.style.width = '50%'; }, 100);
+            fetchData();
+        });
+
+        function fetchData() {
+            const loadingBar = document.getElementById('loading-bar');
+            const overlay = document.getElementById('loading-overlay');
+            const grid = document.getElementById('fly-grid');
+
+            const primaryProxy = "https://corsproxy.io/?" + encodeURIComponent(RAW_SHEET_URL);
+            const fallbackProxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(RAW_SHEET_URL);
+
+            function onComplete(results) {
+                loadingBar.style.width = '100%';
+                processData(results.data);
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    grid.classList.remove('opacity-0');
+                    setTimeout(() => { overlay.classList.add('hidden'); }, 700);
+                }, 600);
+            }
+
+            function onError(err) {
+                console.error("Error loading data:", err);
+                processData(BACKUP_DATA);
+                loadingBar.style.width = '100%';
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    grid.classList.remove('opacity-0');
+                    setTimeout(() => { overlay.classList.add('hidden'); }, 700);
+                }, 600);
+            }
+
+            // Try primary proxy first
+            Papa.parse(primaryProxy, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: onComplete,
+                error: function (err) {
+                    console.warn("Primary proxy failed, trying fallback...", err);
+                    // Try fallback proxy
+                    Papa.parse(fallbackProxy, {
+                        download: true,
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: onComplete,
+                        error: onError // If both fail, use backup data
+                    });
+                }
+            });
+        }
+
+        // --- SMART SEARCH LOGIC ---
+        function removeVietnameseTones(str) {
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỉ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+            str = str.replace(/Đ/g, "D");
+            str = str.replace(/[\u0300-\u036f]/g, "");
+            return str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "");
+        }
+
+        function isLocal() {
+            return window.location.protocol === 'file:' ||
+                window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1';
+        }
+
+        function generateSafeAvatar(name, originalSeed, gender = 'M') {
+            const maleStyles = ["shortFlat", "shortRound", "shortWaved", "sides", "theCaesar", "theCaesarSidePart", "dreads", "curly", "shavedSides"];
+            const femaleStyles = ["longHairBigHair", "longHairBob", "longHairCurly", "longHairCurvy", "longHairStraight", "longHairStraight2"];
+
+            const validStyles = (gender === 'FM') ? femaleStyles : maleStyles;
+
+            // Deterministic style selection based on seed/name
+            const seedString = (originalSeed || name).toString();
+            let hash = 0;
+            for (let i = 0; i < seedString.length; i++) {
+                hash = seedString.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const styleIndex = Math.abs(hash) % validStyles.length;
+            const selectedStyle = validStyles[styleIndex];
+
+            const seed = originalSeed || name.replace(/\s/g, '');
+            const url = `https://api.dicebear.com/9.x/avataaars/svg?seed=WOB_${seed}&top=${selectedStyle}&facialHairProbability=50&backgroundColor=c0aede,b6e3f4,c0aede`;
+
+            // Only use proxy if running locally to avoid CORS issues
+            if (isLocal()) {
+                return "https://wsrv.nl/?url=" + encodeURIComponent(url) + "&output=png";
+            }
+            return url;
+        }
+
+        function processData(rawData) {
+            const grouped = {};
+            let totalPlayers = 0;
+
+            rawData.forEach(item => {
+                if (!item.FlyNo || !item.PlayerName) return;
+                const flyNo = parseInt(item.FlyNo);
+                if (isNaN(flyNo)) return;
+
+                if (!grouped[flyNo]) {
+                    grouped[flyNo] = {
+                        flyNo: flyNo,
+                        teeTime: item.TeeTime || "TBD",
+                        group: item.Group || "",
+                        players: []
+                    };
+                }
+                // Cập nhật Group nếu dòng đầu tiên bị trống mà dòng sau lại có
+                if (!grouped[flyNo].group && item.Group) {
+                    grouped[flyNo].group = item.Group;
+                }
+
+                const gender = item.Gender ? item.Gender.toUpperCase() : 'M';
+                const safeAvatar = generateSafeAvatar(item.PlayerName, item.VGA, gender);
+
+                grouped[flyNo].players.push({
+                    name: item.PlayerName,
+                    normalizedName: removeVietnameseTones(item.PlayerName).toLowerCase(),
+                    vga: item.VGA || "---",
+                    hdc: item.Handicap || 0,
+                    avatar: safeAvatar,
+                    gender: gender
+                });
+                totalPlayers++;
+            });
+
+            allFlightsData = Object.values(grouped).sort((a, b) => a.flyNo - b.flyNo);
+            // Update Total Count: Players / Flights
+            document.getElementById('total-players-count').innerText = `${totalPlayers}/${allFlightsData.length}fly`;
+            renderFlights(allFlightsData);
+        }
+
+        function renderFlights(data) {
+            const grid = document.getElementById('fly-grid');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                document.getElementById('no-result').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('no-result').classList.add('hidden');
+            }
+
+            data.forEach(fly => {
+                // Tạo danh sách người chơi (Dùng class .player-row mới)
+                const playersHtml = fly.players.map(p => `
+                    <div class="player-row group">
+                        <div class="player-avatar-wrapper">
+                               <img src="${p.avatar}" alt="${p.name}" width="44" height="44" loading="lazy" decoding="async" fetchpriority="low"
+                                   class="w-full h-full object-cover"
+                                   onerror="this.src=isLocal() ? 'https://wsrv.nl/?url=' + encodeURIComponent('https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=random') + '&output=png' : 'https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=random'">
+                        </div>
+                        
+                        <div class="flex-grow min-w-0">
+                            <div class="text-sm font-bold text-gray-800 truncate group-hover:text-green-800 transition">${p.name}</div>
+                            <div class="mt-0.5"><span class="vga-badge">VGA: ${p.vga}</span></div>
+                        </div>
+
+                        <div class="flex-shrink-0 pl-2">
+                            <div class="badge-hdc-square" title="Handicap">${p.hdc}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Tạo khung Card (Dùng class .flight-card, .flight-header mới)
+                const card = document.createElement('div');
+                card.className = "flight-card"; // Class khung bao mới
+
+                card.innerHTML = `
+                    <div class="flight-header">
+                        <div class="flex items-center gap-3">
+                            <div class="flight-number-box">
+                                ${fly.flyNo}
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-bold text-green-200 uppercase tracking-widest leading-none mb-1 opacity-80">Flight</span>
+                                <span class="text-white font-bold text-lg leading-none flex items-center gap-2">
+                                    <i class="fa-regular fa-clock text-xs text-yellow-400"></i> ${fly.teeTime}
+                                </span>
+                            </div>
+                        </div>
+
+                        ${fly.group ? `<div class="group-badge">GROUP ${fly.group}</div>` : ''}
+                    </div>
+
+                    <div class="bg-gray-50 px-4 py-2 flex justify-between items-center border-b border-gray-200">
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider pl-14">Golfer info</span>
+                        <span class="text-[9px] font-bold text-green-700 uppercase tracking-wider pr-1">HDC</span>
+                    </div>
+
+                    <div class="flex-grow flex flex-col bg-white">
+                        ${playersHtml}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function filterFlights() {
+            const input = document.getElementById('searchInput');
+            const rawTerm = input.value.trim();
+            const term = removeVietnameseTones(rawTerm).toLowerCase();
+            const countBadge = document.getElementById('search-count');
+
+            if (rawTerm === "") {
+                countBadge.classList.add('hidden');
+                renderFlights(allFlightsData);
+                return;
+            }
+
+            const filtered = allFlightsData.filter(fly => {
+                return fly.players.some(p =>
+                    p.normalizedName.includes(term) ||
+                    String(p.vga).toLowerCase().includes(term)
+                );
+            });
+
+            countBadge.innerText = filtered.length;
+            countBadge.classList.remove('hidden');
+            renderFlights(filtered);
+        }
+
+        function captureScreen() {
+            // Capture the entire body instead of just main
+            const elementToCapture = document.body;
+
+            // Show loading state
+            const btn = document.querySelector('button[onclick="captureScreen()"]');
+            const originalIcon = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            html2canvas(elementToCapture, {
+                scale: 2, // High resolution
+                useCORS: true, // Allow loading cross-origin images (avatars)
+                backgroundColor: null, // Allow transparent/CSS background
+                logging: false,
+                onclone: (clonedDoc) => {
+                    const clonedBody = clonedDoc.body;
+
+                    // Hide the search input and search count in the clone
+                    const searchInput = clonedDoc.getElementById('searchInput');
+                    if (searchInput) searchInput.style.visibility = 'hidden';
+
+                    const searchCount = clonedDoc.getElementById('search-count');
+                    if (searchCount) searchCount.style.visibility = 'hidden';
+
+                    // Hide the capture button itself in the clone
+                    const clonedBtn = clonedDoc.querySelector('button[onclick="captureScreen()"]');
+                    if (clonedBtn) clonedBtn.style.visibility = 'hidden';
+
+                    // Apply the background pattern class to the captured element
+                    clonedBody.classList.add('bg-golf-pattern');
+                    clonedBody.style.minHeight = '100%';
+
+                    // Fix text clipping issues
+                    const truncatedElements = clonedDoc.querySelectorAll('.truncate');
+                    truncatedElements.forEach(el => {
+                        el.style.overflow = 'visible';
+                        el.style.textOverflow = 'clip';
+                        el.style.whiteSpace = 'nowrap';
+                        el.style.lineHeight = '1.5';
+                        el.style.paddingBottom = '2px';
+                    });
+
+                    // Fix alignment issues (text dropping down)
+                    // We wrap the text content in a span and shift it up using relative positioning
+                    const badges = clonedDoc.querySelectorAll('.flight-number-box, .group-badge, .badge-hdc-square');
+                    badges.forEach(el => {
+                        // Ensure flex centering is active
+                        el.style.display = 'flex';
+                        el.style.alignItems = 'center';
+                        el.style.justifyContent = 'center';
+
+                        // Wrap content in a span to shift it up
+                        // We use a slightly larger shift for html2canvas rendering quirks
+                        const text = el.innerText;
+                        el.innerHTML = `<span style="position: relative; top: -5px; display: inline-block; line-height: 1;">${text}</span>`;
+                    });
+
+                    // Ensure flight cards don't clip content
+                    const cards = clonedDoc.querySelectorAll('.flight-card');
+                    cards.forEach(card => {
+                        card.style.height = 'auto';
+                        card.style.boxShadow = 'none';
+
+                        // Fix for backdrop-filter
+                        const numberBox = card.querySelector('.flight-number-box');
+                        if (numberBox) {
+                            numberBox.style.background = 'rgba(255,255,255,0.3)';
+                            numberBox.style.backdropFilter = 'none';
+                        }
+                    });
+                }
+            }).then(canvas => {
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'WOB_Pairings_' + new Date().getTime() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // Restore button
+                btn.innerHTML = originalIcon;
+                btn.disabled = false;
+            }).catch(err => {
+                console.error("Capture failed:", err);
+                alert("Không thể chụp màn hình. Vui lòng thử lại.");
+                btn.innerHTML = originalIcon;
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+
+</html>
